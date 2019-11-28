@@ -29,25 +29,36 @@ MongoClient.connect(url, { useUnifiedTopology: true }, (err, db) => {
 /**SOME GLOBAL THINGS*/
 const SUCCESS = JSON.stringify({ success: true });
 const FAILURE = JSON.stringify({ success: false });
+/**COLLECTIONS */
+const AUTH = "auth";
+const SESSIONS = "sessions";
+const USERS = "users";
+const RECIPES = "recipes";
+const INGREDIENTS = "ingredients";
+const RATINGS = "ratings";
 
 /**USEFUL FUNCTIONS */
 let genID = () => Math.floor(Math.random() * 1000000);
 
-let findSID = uid => {
-  let sid = new Promise((resolve, reject) => {
-    dbo.collection("sessions").findOne({ uid }, (err, found) => {
+let findSingle = (query, collection) => {
+  let ret = new Promise((resolve, reject) => {
+    dbo.collection(collection).findOne(query, (err, found) => {
       if (err) {
-        reject("error finding session: ", err);
+        reject("error: ", err);
         return;
       }
       resolve(found);
     });
   });
-  return sid;
+  return ret;
+};
+
+let findMany = (query, collection) => {
+  return; // MORE ON THIS LATER
 };
 
 let setSID = (uid, res) => {
-  findSID(uid).then(found => {
+  findSingle({ uid }, SESSIONS).then(found => {
     if (found !== null) {
       dbo.collection("sessions").deleteOne({ uid });
     }
@@ -73,12 +84,7 @@ app.post("/signup", upload.none(), (req, res) => {
       console.log("error bcrypt hashing: ", err);
       return;
     }
-    dbo.collection("auth").findOne({ username }, (err, found) => {
-      if (err) {
-        console.log("error checking username: ", err);
-        res.send(FAILURE);
-        return;
-      }
+    findSingle({ username }, AUTH).then(found => {
       if (found !== null) {
         res.send(FAILURE);
         nameAvailable = false;
@@ -99,12 +105,7 @@ app.post("/signup", upload.none(), (req, res) => {
 app.post("/login", upload.none(), (req, res) => {
   console.log("... login request by: ", req.body.username);
   let username = req.body.username;
-  dbo.collection("auth").findOne({ username }, (err, found) => {
-    if (err) {
-      console.log("error finding username, ", err);
-      res.send(FAILURE);
-      return;
-    }
+  findSingle({ username }, AUTH).then(found => {
     if (found === null) {
       console.log("username doesn't exist");
       res.send(FAILURE);
@@ -121,9 +122,18 @@ app.post("/login", upload.none(), (req, res) => {
   });
 });
 
+app.post("/checkCookie", upload.none(), (req, res) => {
+  console.log("... checking cookie");
+  let sid = req.cookies.sid;
+  if (sid !== undefined) {
+    let uid = findSingle({ sid }, SESSIONS).then(ret => ret.uid); // returns promise of
+    //WERE GONNA SENDS A LOT OF INFO MORE ON THIS LATER
+  }
+  res.send(FAILURE);
+});
+
 /**BOILERPLATE THINGS */
 app.all("/*", (req, res, next) => {
-  // needed for react router
   res.sendFile(__dirname + "/build/index.html");
 });
 
