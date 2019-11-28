@@ -89,12 +89,35 @@ app.post("/signup", upload.none(), (req, res) => {
       let uid = genID();
       let recipes = [];
       let saved = [];
-      console.log("adding to db");
-      dbo.collection("sessions").insertOne({ uid: "test", sid: "test" });
       dbo.collection("auth").insertOne({ username, hash });
       dbo.collection("users").insertOne({ username, uid, recipes, saved });
       setSID(username, res); //sets sid & sends SUCCESS
     }
+  });
+});
+
+app.post("/login", upload.none(), (req, res) => {
+  console.log("... login request by: ", req.body.username);
+  let username = req.body.username;
+  dbo.collection("auth").findOne({ username }, (err, found) => {
+    if (err) {
+      console.log("error finding username, ", err);
+      res.send(FAILURE);
+      return;
+    }
+    if (found === null) {
+      console.log("username doesn't exist");
+      res.send(FAILURE);
+      return;
+    }
+    bcrypt.compare(req.body.password, found.hash).then(match => {
+      if (match) {
+        setSID(username, res);
+        return;
+      }
+      console.log("invalid password");
+      res.send(FAILURE);
+    });
   });
 });
 
