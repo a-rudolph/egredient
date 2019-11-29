@@ -26,10 +26,34 @@ let recipes = {
 
 let ingredients = {
   name: "",
-  category: "",
-  tags: [],
-  img: "url"
+  img: "url",
+  category: "" // vegetable, fruit, meat, seafood, grain, spice, dairy
 };
+
+// let vegetables = {
+//   name: "",
+//   img: "url",
+// }
+// let meat = {
+//   name: "",
+//   img: "url",
+// }
+// let seafood = {
+//   name: "",
+//   img: "url",
+// }
+// let grains = {
+//   name: "",
+//   img: "url",
+// }
+// let spices = {
+//   name: "",
+//   img: "url",
+// }
+// let dairy = {
+//   name: "",
+//   img: "url",
+// }
 
 let ratings = {
   rid: "",
