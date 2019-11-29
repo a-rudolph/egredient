@@ -1,5 +1,6 @@
 const request = require("request");
 const cheerio = require("cheerio");
+const fetch = require("node-fetch");
 
 let newRecipe = async url => {
   request(url, (err, res, html) => {
@@ -58,14 +59,84 @@ let newRecipe = async url => {
       steps
     };
     console.log(recipe);
-    return recipe;
   });
 };
 
-let scrapeRecipe = async () => {
-  let recipe = await newRecipe(
-    "https://www.allrecipes.com/recipe/17897/hungarian-mushroom-soup/?internalSource=previously%20viewed&referringContentType=Homepage"
+let getVegetables = async url => {
+  request(
+    "https://simple.wikipedia.org/wiki/List_of_vegetables",
+    async (err, res, html) => {
+      if (err) {
+        console.log("error: ", err);
+        return;
+      }
+      if (res.statusCode !== 200) {
+        console.log("failed status code");
+        return;
+      }
+      /**scrape for the links to each veg */
+      let $ = cheerio.load(html);
+
+      let links = Array.from($(`li`).find(`a`));
+      let filteredLinks = links.filter(elem => {
+        let ret = $(elem).attr("class") === undefined;
+        if (ret) {
+          ret = !(
+            $(elem)
+              .attr("href")
+              .includes("vegetable") ||
+            $(elem)
+              .attr("href")
+              .includes(":") ||
+            $(elem)
+              .attr("href")
+              .includes("Main") ||
+            $(elem)
+              .attr("href")
+              .includes("foundation")
+          );
+        }
+        if (ret) {
+          ret = $(elem)
+            .attr("href")
+            .includes("/wiki");
+        }
+        if (ret) {
+          ret = $(elem)
+            .attr("href")
+            .includes("/wiki");
+        }
+        return ret;
+      });
+      let endpoints = filteredLinks.map(a => {
+        return $(a).attr("href");
+      });
+
+      /**scrape each vegetable link */
+      let requests = endpoints.map(async link => {
+        let res = await fetch("https://simple.wikipedia.org" + link);
+        let html = await res.text();
+
+        let $ = cheerio.load(html);
+        let name = $(`title`)
+          .text()
+          .split(" - ")[0];
+        let img = $(`a`)
+          .find(`img`)
+          .attr(`src`);
+        let category = "vegetable";
+        return { name, img, category };
+      });
+      let vegetables = await Promise.all(requests);
+      console.log(vegetables);
+    }
   );
 };
 
-scrapeRecipe();
+/** enter the url you want and call the function to scrape */
+
+let url =
+  "https://www.allrecipes.com/recipe/17897/hungarian-mushroom-soup/?internalSource=previously%20viewed&referringContentType=Homepage";
+
+// newRecipe(url)
+// getVegetables();
