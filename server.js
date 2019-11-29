@@ -120,6 +120,12 @@ app.post("/login", upload.none(), (req, res) => {
   });
 });
 
+app.post("/logout", upload.none(), (req, res) => {
+  console.log("... logout");
+  res.clearCookie("sid");
+  res.send(SUCCESS);
+});
+
 app.post("/checkCookie", upload.none(), (req, res) => {
   console.log("... checking cookie");
   let sid = req.cookies.sid;
