@@ -1,3 +1,29 @@
+const tags = [
+  "breakfast",
+  "lunch",
+  "dinner",
+  "dessert",
+  "healthy",
+  "spicy",
+  "gourmet",
+  "budget",
+  "french",
+  "chinese",
+  "indian",
+  "japanese",
+  "rustic",
+  "sweet",
+  "salad",
+  "appetizer",
+  "vegetarian",
+  "vegan",
+  "seafood",
+  "holiday",
+  "family",
+  "baking",
+  "simple"
+];
+
 const vegetables = [
   {
     name: "Artichoke",
@@ -478,4 +504,4 @@ const vegetables = [
   }
 ];
 
-export { vegetables };
+export { vegetables, tags };

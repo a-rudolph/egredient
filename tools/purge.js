@@ -11,28 +11,27 @@ MongoClient.connect(url, { useUnifiedTopology: true }, (err, db) => {
     return;
   }
   dbo = db.db("e-gredient");
-  let collections = [
-    "auth",
-    "users",
-    "sessions",
-    "recipes",
-    "ingredients",
-    "done"
-  ];
+  let collections = ["auth", "users", "sessions", "recipes", "done"];
   //   let collections = dbo.runCommand({
   //     listCollections: 1.0,
   //     authorizedCollections: true,
   //     nameOnly: true
   //   });
-  // console.log("Collections: ", collections.join(", "));
+  console.log("Collections: ", collections.join(", "));
   let inquire = () => {
     inquirer
       .prompt([
+        // {
+        //   type: "list",
+        //   choices: collections,
+        //   name: "collection",
+        //   message: "Choose a collection to purge?"
+        // }
         {
-          type: "list",
-          choices: collections,
+          type: "input",
           name: "collection",
-          message: "Choose a collection to purge?"
+          message: "Choose a collection to purge",
+          default: "done"
         }
       ])
       .then(answer => {

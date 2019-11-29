@@ -34,12 +34,23 @@ const AUTH = "auth";
 const SESSIONS = "sessions";
 const USERS = "users";
 const RECIPES = "recipes";
-const INGREDIENTS = "ingredients";
 const RATINGS = "ratings";
 
 /**USEFUL FUNCTIONS */
 let genID = () => Math.floor(Math.random() * 1000000);
+let setSID = (username, res) => {
+  findSingle({ username }, SESSIONS).then(found => {
+    if (found !== null) {
+      dbo.collection("sessions").deleteOne({ username });
+    }
+    let sid = genID();
+    dbo.collection("sessions").insertOne({ username, sid });
+    res.cookie("sid", sid);
+    res.send(SUCCESS);
+  });
+};
 
+/** for searching in db */
 let findSingle = (query, collection) => {
   let ret = new Promise((resolve, reject) => {
     dbo.collection(collection).findOne(query, (err, found) => {
@@ -57,28 +68,17 @@ let findMany = (query, collection) => {
   return; // MORE ON THIS LATER
 };
 
-let setSID = (uid, res) => {
-  findSingle({ uid }, SESSIONS).then(found => {
-    if (found !== null) {
-      dbo.collection("sessions").deleteOne({ uid });
-    }
-    let sid = genID();
-    dbo.collection("sessions").insertOne({ uid, sid });
-    res.cookie("sid", sid);
-    res.send(SUCCESS);
-  });
-};
-
 /**STATIC ENDPOINTS */
-app.use("/", express.static("build")); // Needed for the HTML and JS files
-app.use("/", express.static("public")); // Needed for local assets
+app.use("/", express.static("build"));
+app.use("/", express.static("public"));
 
-/**ENDPOINTS */
+/********************* ENDPOINTS *****************************/
+
+/** AUTHENTICATION */
 
 app.post("/signup", upload.none(), (req, res) => {
   console.log("... signup request by: ", req.body.username);
   let username = req.body.username;
-  let nameAvailable = true;
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
     if (err) {
       console.log("error bcrypt hashing: ", err);
@@ -90,15 +90,13 @@ app.post("/signup", upload.none(), (req, res) => {
         nameAvailable = false;
         return;
       }
-    });
-    if (nameAvailable) {
       let uid = genID();
       let recipes = [];
       let saved = [];
-      dbo.collection("auth").insertOne({ username, hash });
-      dbo.collection("users").insertOne({ username, uid, recipes, saved });
+      dbo.collection(AUTH).insertOne({ username, hash });
+      dbo.collection(USERS).insertOne({ username, uid, recipes, saved });
       setSID(username, res); //sets sid & sends SUCCESS
-    }
+    });
   });
 });
 
@@ -126,10 +124,56 @@ app.post("/checkCookie", upload.none(), (req, res) => {
   console.log("... checking cookie");
   let sid = req.cookies.sid;
   if (sid !== undefined) {
-    let uid = findSingle({ sid }, SESSIONS).then(ret => ret.uid); // returns promise of
-    //WERE GONNA SENDS A LOT OF INFO MORE ON THIS LATER
+    findSingle({ sid }, SESSIONS).then(found => {
+      if (found.uid !== undefined) {
+        res.send(SUCCESS);
+        return;
+      }
+      res.send(FAILURE);
+    });
+  } else {
+    res.send(FAILURE);
   }
-  res.send(FAILURE);
+});
+
+/** RECIPES AND SUCH */
+
+app.get("/recipes", (req, res) => {});
+
+app.post("/new-recipe", upload.none(), (req, res) => {
+  console.log("... new recipe: ", req.body);
+  //recieves: "title", "description", [ingredients], [steps], [tags]
+  let sid = req.cookies.sid;
+  findSingle({ sid }, SESSIONS).then(found => {
+    // if (found === null) {
+    //   console.log("invalid sid");
+    //   res.send(FAILURE);
+    //   return;
+    // }
+    let chef = "guest chef";
+    let rid = genID();
+    let date = new Date();
+    let title = req.body.title;
+    let image = req.body.image;
+    let description = req.body.description;
+    let ingredients = JSON.parse(req.body.ingredients);
+    let steps = JSON.parse(req.body.steps);
+    let tags = JSON.parse(req.body.tags);
+    let newRecipe = {
+      chef,
+      rid,
+      date,
+      title,
+      image,
+      description,
+      ingredients,
+      steps,
+      tags
+    };
+    console.log("new recipe: ", newRecipe);
+    //dbo.collection(RECIPES).insertOne(newRecipe);
+    res.send(SUCCESS);
+  });
 });
 
 /**BOILERPLATE THINGS */

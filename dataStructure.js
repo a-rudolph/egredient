@@ -3,7 +3,7 @@ let auth = {
   hash: ""
 };
 let sessions = {
-  uid: "",
+  username: "",
   sid: ""
 };
 
@@ -15,9 +15,11 @@ let users = {
 };
 
 let recipes = {
+  chef: "", // chef
   rid: "", // recipe id
-  uid: "", // chef id
-  title: "",
+  date: "",
+  title: "", //the following is user submitted
+  image: "",
   description: "",
   ingredients: [],
   steps: [],

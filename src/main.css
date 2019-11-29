@@ -1,23 +1,76 @@
-body {
-    background-color: #bbb;
-    margin: 0;
+/* Color Theme Swatches in Hex */
+.Islandia-1-hex {
+  color: #6393a6;
+}
+.Islandia-2-hex {
+  color: #01260e;
+}
+.Islandia-3-hex {
+  color: #000d05;
+}
+.Islandia-4-hex {
+  color: #0e2616;
+}
+.Islandia-5-hex {
+  color: #455931;
 }
 
+/* Color Theme Swatches in Hex */
+.webbackground {
+  color: #01261c;
+}
+.cardbackground {
+  color: #035941;
+}
+.somethingelse {
+  color: #02402e;
+}
+.highlightcolor {
+  color: #d98e04;
+}
+.textcolor {
+  color: #bf4904;
+}
+
+body {
+  background-color: rgba(0, 0, 0, 0.5);
+  background: url("/background.jpg");
+  margin: 0;
+  height: 90vh;
+  width: 100%;
+  color: #bf4904;
+}
+input,
+textarea {
+  outline: transparent;
+}
 .overlay {
-    z-index:50;
-    position: fixed;
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
-    background-color:rgba(0,0,0,0.5);
+  z-index: -1;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .popup {
-    z-index:100;
-    position: fixed;
-    top:200px;
-    left:200px;
-    right:200px;
-    background-color:white
+  z-index: 100;
+  position: fixed;
+  top: 200px;
+  left: 200px;
+  right: 200px;
+  background-color: white;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 50px;
 }

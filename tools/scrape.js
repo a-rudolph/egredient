@@ -138,5 +138,5 @@ let getVegetables = async url => {
 let url =
   "https://www.allrecipes.com/recipe/17897/hungarian-mushroom-soup/?internalSource=previously%20viewed&referringContentType=Homepage";
 
-// newRecipe(url)
+newRecipe(url);
 // getVegetables();
