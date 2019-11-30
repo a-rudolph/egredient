@@ -26,6 +26,13 @@ let recipes = {
   tags: []
 };
 
+// let recipeByIngredients = { // for searching purposes
+//   rid: "",
+//   ing1: 1,
+//   ing2: 1,
+//   ...
+// }
+
 let ingredients = {
   name: "",
   img: "url",

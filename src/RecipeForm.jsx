@@ -98,13 +98,14 @@ class RecipeForm extends Component {
     ev.preventDefault();
     let steps = this.state.steps.split("\n");
     let ingredients = this.state.ingredients.split("\n");
+    let tags = Object.keys(this.state.tags);
     let data = new FormData();
     data.append("title", this.state.title);
     data.append("image", this.state.image);
     data.append("description", this.state.description);
     data.append("ingredients", JSON.stringify(ingredients));
     data.append("steps", JSON.stringify(steps));
-    data.append("tags", JSON.stringify(this.state.tags));
+    data.append("tags", JSON.stringify(tags));
     fetch("/new-recipe", {
       method: "POST",
       body: data,
