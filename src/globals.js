@@ -1,1 +1,2 @@
-let LOGIN = "login";
+const LOGIN = "login";
+const MODAL = "modal";

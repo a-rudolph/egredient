@@ -1,15 +1,19 @@
 import { createStore } from "redux";
-import { LOGIN } from "./globals.js";
+import { LOGIN, MODAL } from "./globals.js";
 
 const INITIAL_STATE = {
   activeUser: "guest",
-  loggedIn: false
+  loggedIn: false,
+  modal: "none"
 };
 
 let reducer = (state, action) => {
   switch (action.type) {
     case LOGIN: {
       return { ...state, loggedIn: true, activeUser: action.username };
+    }
+    case MODAL: {
+      return { ...state, display: action.display };
     }
     default: {
       return state;

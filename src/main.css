@@ -36,7 +36,7 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   background: url("/background.jpg");
   margin: 0;
-  height: 90vh;
+  height: 100%;
   width: 100%;
   color: #bf4904;
 }
