@@ -1,5 +1,5 @@
 import { createStore } from "redux";
-import { LOGIN, MODAL } from "./globals.js";
+import { LOGIN, MODAL, LOGOUT } from "./globals.js";
 
 const INITIAL_STATE = {
   activeUser: "guest",
@@ -13,7 +13,10 @@ let reducer = (state, action) => {
       return { ...state, loggedIn: true, activeUser: action.username };
     }
     case MODAL: {
-      return { ...state, display: action.display };
+      return { ...state, modal: action.display };
+    }
+    case LOGOUT: {
+      return { ...INITIAL_STATE };
     }
     default: {
       return state;
@@ -23,7 +26,7 @@ let reducer = (state, action) => {
 
 const store = createStore(
   reducer,
-  INITIAL_STATE,
+  { ...INITIAL_STATE },
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 

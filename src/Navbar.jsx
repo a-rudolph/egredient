@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FaCaretDown } from "react-icons/fa";
+import { MODAL, LOGOUT } from "./globals.js";
 
 const Nav = styled.div`
   display: grid;
@@ -27,8 +28,10 @@ const Nav = styled.div`
     display: none;
     position: absolute;
     min-width: 80px;
-    button,
-    a {
+    .dropdown-elem {
+      display: inline-block;
+      background-color: pink;
+
       padding: 15px;
       text-decoration: none;
       color: black;
@@ -53,36 +56,45 @@ class UnconnectedNavbar extends Component {
     this.state = { active: "none" };
   }
 
-  // renderNav = () =>{
-  //     let ids = ["recipes", "ingredients", "user"]
-  //     return ids.map(id => {
-  //         if (id === this.state.active) {
-  //             return <div id={id} key={id}>{id}</div>
-  //         }
-  //     return <div id={id} key={id}>{}</div>
-  //     })
-  // }
   renderDropdown = () => {
-    if (this.state.isLoggedin) {
+    if (this.props.isLoggedIn) {
       return (
         <div className="dropdown-content">
-          <Link id="favs" to="/">
+          <Link className="dropdown-elem" id="favs" to="/">
             favourites
           </Link>
-          <Link id="new-recipe" to="/">
+          <Link className="dropdown-elem" id="new-recipe" to="/">
             new recipe
           </Link>
-          <Link id="settings" to="/">
+          <Link className="dropdown-elem" id="settings" to="/">
             settings
           </Link>
-          <button id="logout">logout</button>
+          <button
+            className="dropdown-elem"
+            id="logout"
+            onClick={this.props.logout}
+          >
+            logout
+          </button>
         </div>
       );
     }
     return (
       <div className="dropdown-content">
-        <button id="login">login</button>
-        <button id="sign-up">sign up</button>
+        <button
+          className="dropdown-elem"
+          id="login"
+          onClick={this.props.toLogin}
+        >
+          login
+        </button>
+        <button
+          className="dropdown-elem"
+          id="signup"
+          onClick={this.props.toSignup}
+        >
+          sign up
+        </button>
       </div>
     );
   };
@@ -115,6 +127,20 @@ class UnconnectedNavbar extends Component {
   }
 }
 
+let mapDispatchToProps = dispatch => {
+  return {
+    toLogin: () => {
+      dispatch({ type: MODAL, display: "login" });
+    },
+    toSignup: () => {
+      dispatch({ type: MODAL, display: "signup" });
+    },
+    logout: () => {
+      dispatch({ type: LOGOUT });
+    }
+  };
+};
+
 let mapStateToProps = st => {
   return {
     user: st.activeUser,
@@ -122,6 +148,6 @@ let mapStateToProps = st => {
   };
 };
 
-let Navbar = connect(mapStateToProps)(UnconnectedNavbar);
+let Navbar = connect(mapStateToProps, mapDispatchToProps)(UnconnectedNavbar);
 
 export default Navbar;

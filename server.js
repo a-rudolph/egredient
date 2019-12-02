@@ -37,7 +37,7 @@ const RECIPES = "recipes";
 const RATINGS = "ratings";
 
 /**USEFUL FUNCTIONS */
-let genID = () => Math.floor(Math.random() * 1000000);
+let genID = () => "" + Math.floor(Math.random() * 1000000);
 let setSID = (username, res) => {
   findSingle({ username }, SESSIONS).then(found => {
     if (found !== null) {
@@ -127,17 +127,24 @@ app.post("/logout", upload.none(), (req, res) => {
 });
 
 app.post("/checkCookie", upload.none(), (req, res) => {
-  console.log("... checking cookie");
   let sid = req.cookies.sid;
+  console.log("... checking cookie, ", sid);
   if (sid !== undefined) {
-    findSingle({ sid }, SESSIONS).then(found => {
-      if (found.uid !== undefined) {
-        res.send(SUCCESS);
+    findSingle({ sid }, "sessions").then(found => {
+      console.log(found);
+      if (found === null) {
+        console.log("found null");
+        res.send(FAILURE);
+        return;
+      }
+      if (found.username !== undefined) {
+        res.send(JSON.stringify({ success: true, username: found.username }));
         return;
       }
       res.send(FAILURE);
     });
   } else {
+    console.log("no cookie");
     res.send(FAILURE);
   }
 });
