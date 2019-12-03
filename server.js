@@ -5,7 +5,6 @@ let upload = multer();
 let cookieParser = require("cookie-parser");
 app.use(cookieParser());
 let MongoClient = require("mongodb").MongoClient;
-let ObjectID = require("mongodb").ObjectID;
 let bcrypt = require("bcryptjs");
 let saltRounds = 10;
 let reloadMagic = require("./reload-magic.js");
@@ -41,10 +40,10 @@ let genID = () => "" + Math.floor(Math.random() * 1000000);
 let setSID = (username, res) => {
   findSingle({ username }, SESSIONS).then(found => {
     if (found !== null) {
-      dbo.collection("sessions").deleteOne({ username });
+      dbo.collection(SESSIONS).deleteOne({ username });
     }
     let sid = genID();
-    dbo.collection("sessions").insertOne({ username, sid });
+    dbo.collection(SESSIONS).insertOne({ username, sid });
     res.cookie("sid", sid);
     res.send(SUCCESS);
   });
@@ -130,7 +129,7 @@ app.post("/checkCookie", upload.none(), (req, res) => {
   let sid = req.cookies.sid;
   console.log("... checking cookie, ", sid);
   if (sid !== undefined) {
-    findSingle({ sid }, "sessions").then(found => {
+    findSingle({ sid }, SESSIONS).then(found => {
       console.log(found);
       if (found === null) {
         console.log("found null");
@@ -158,12 +157,12 @@ app.post("/new-recipe", upload.none(), (req, res) => {
   //recieves: "title", "description", [ingredients], [steps], [tags]
   let sid = req.cookies.sid;
   findSingle({ sid }, SESSIONS).then(found => {
-    // if (found === null) {
-    //   console.log("invalid sid");
-    //   res.send(FAILURE);
-    //   return;
-    // }
-    let chef = "guest chef";
+    if (found === null) {
+      console.log("invalid sid");
+      res.send(FAILURE);
+      return;
+    }
+    let chef = found.username;
     let rid = genID();
     let date = new Date();
     let title = req.body.title;

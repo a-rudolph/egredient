@@ -10,28 +10,57 @@ const Nav = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-  grid-template-columns: auto auto 1fr auto auto auto 50px;
-  background-color: chartreuse;
+  grid-template-columns: auto auto 1fr auto auto auto;
+  background-color: white;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   .nav-elem {
     padding: 15px;
     text-decoration: none;
     color: black;
+  }
+  a.nav-elem {
+    div {
+      position: relative;
+      &:after {
+        height: 2px;
+        background: #0e2616;
+        content: "";
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        margin-top: 2px;
+        position: absolute;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.4s;
+      }
+    }
     &:hover {
-      background-color: #0e2616;
-      color: whitesmoke;
+      div:after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
     }
   }
+
+  /* a.nav-elem:hover {
+    background-color: #0e2616;
+    color: whitesmoke;
+  } */
   .dropdown {
     display: inline-block;
   }
   .dropdown-content {
-    display: none;
     position: absolute;
+    right: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s;
     min-width: 80px;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
     .dropdown-elem {
+      background-color: white;
       display: inline-block;
-      background-color: pink;
-
       padding: 15px;
       text-decoration: none;
       color: black;
@@ -45,7 +74,8 @@ const Nav = styled.div`
   }
   .dropdown:hover {
     .dropdown-content {
-      display: block;
+      transform: scaleY(1);
+      transform-origin: top;
     }
   }
 `;
@@ -110,10 +140,10 @@ class UnconnectedNavbar extends Component {
         </Link>
         <div id="placeholder"></div>
         <Link className="nav-elem" id="recipes" to="/recipes">
-          recipes
+          <div>recipes</div>
         </Link>
         <Link className="nav-elem" id="ingredients" to="/ingredients">
-          ingredients
+          <div>ingredients</div>
         </Link>
         <div className="dropdown">
           <div className="nav-elem" id="user">
@@ -121,7 +151,6 @@ class UnconnectedNavbar extends Component {
           </div>
           {this.renderDropdown()}
         </div>
-        <div id="placeholder"></div>
       </Nav>
     );
   }
