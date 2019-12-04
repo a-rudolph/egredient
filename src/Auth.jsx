@@ -20,15 +20,7 @@ const Auth = styled.div`
       visibility: visible;
     }
   }
-  position: fixed;
-  left: 0;
-  top: 0;
   z-index: 10;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
   .modal-content {
     background-color: rgba(255, 255, 255);
     border-radius: 10px;
@@ -239,7 +231,7 @@ class UnconnectedAuth extends Component {
     // console.log("rendering with state, ", this.state);
     return (
       <>
-        <Auth className="modal" show={this.props.display}>
+        <Auth className="overlay" show={this.props.display}>
           <div className="modal-content">
             <span id="close" onClick={this.closeHandler}>
               &times;

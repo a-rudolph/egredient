@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { tags } from "./DATA.js";
+import { tags } from "./data.js";
 import styled from "styled-components";
 
 const Form = styled.div`

@@ -4,9 +4,11 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FaCaretDown } from "react-icons/fa";
 import { MODAL, LOGOUT } from "./globals.js";
+import { get } from "http";
 
 const Nav = styled.div`
   display: grid;
+  z-index: 3;
   position: fixed;
   top: 0;
   width: 100%;
@@ -22,13 +24,13 @@ const Nav = styled.div`
     div {
       position: relative;
       &:after {
-        height: 2px;
+        height: 1px;
         background: #0e2616;
         content: "";
         width: 100%;
         bottom: 0;
         left: 0;
-        margin-top: 2px;
+        margin-top: 5px;
         position: absolute;
         transform: scaleX(0);
         transform-origin: right;
@@ -59,13 +61,18 @@ const Nav = styled.div`
     min-width: 80px;
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
     .dropdown-elem {
+      margin: 0;
+      box-sizing: border-box;
+      text-align: left;
+      cursor: pointer;
+      user-select: none;
       background-color: white;
       display: inline-block;
       padding: 15px;
       text-decoration: none;
       color: black;
       border: none;
-      width: 100%;
+      transition: all 0.1s;
       &:hover {
         background-color: #0e2616;
         color: whitesmoke;
@@ -86,6 +93,21 @@ class UnconnectedNavbar extends Component {
     this.state = { active: "none" };
   }
 
+  logoutHandler = () => {
+    fetch("/logout")
+      .then(resp => {
+        return resp.text();
+      })
+      .then(body => {
+        let response = JSON.parse(body);
+        if (response.success) {
+          this.props.logout();
+          return;
+        }
+        alert("error logging out. try again");
+      });
+  };
+
   renderDropdown = () => {
     if (this.props.isLoggedIn) {
       return (
@@ -99,13 +121,9 @@ class UnconnectedNavbar extends Component {
           <Link className="dropdown-elem" id="settings" to="/">
             settings
           </Link>
-          <button
-            className="dropdown-elem"
-            id="logout"
-            onClick={this.props.logout}
-          >
+          <a className="dropdown-elem" id="logout" onClick={this.logoutHandler}>
             logout
-          </button>
+          </a>
         </div>
       );
     }

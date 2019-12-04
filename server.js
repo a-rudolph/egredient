@@ -119,7 +119,7 @@ app.post("/login", upload.none(), (req, res) => {
   });
 });
 
-app.post("/logout", upload.none(), (req, res) => {
+app.get("/logout", (req, res) => {
   console.log("... logout");
   res.clearCookie("sid");
   res.send(SUCCESS);

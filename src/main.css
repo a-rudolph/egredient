@@ -32,13 +32,18 @@
   color: #bf4904;
 }
 
+* {
+  font-family: "Montserrat", sans-serif;
+}
+
 body {
   /* background-color: rgba(0, 0, 0, 0.5);
   background: url("/background.jpg") no-repeat;
   background-size: cover; */
+
+  background: url("/background.jpg");
   background-color: whitesmoke;
   margin: 0;
-  height: 100%;
   width: 100%;
   color: black;
 }
@@ -53,7 +58,7 @@ textarea {
   right: 0;
   top: 0;
   bottom: 0;
-  /* background-color: rgba(0, 0, 0, 0.8); */
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .popup {
@@ -75,4 +80,5 @@ textarea {
   justify-content: center;
   width: 100%;
   margin-top: 50px;
+  height: calc(100vh - 50px);
 }
