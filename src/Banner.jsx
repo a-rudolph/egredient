@@ -3,12 +3,36 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { vegetables } from "./data.js"
 
+const openCss = `
+height: 100%;
+.overlay {
+    opacity: 1;
+    p {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-weight: bold;
+    }
+    div {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-weight: bold;
+    }
+}
+`
+
 const Container = styled.div`
-    height: 40vh;
+    ${props => {
+        if (props.status === "closed") {
+            return `height: 40vh;`
+        }
+        return openCss
+    }}
+
+
+    transition: all .4s ease-in-out;
     background: transparent;
-    /* background: no-repeat right;
-    background-size: cover;
-    background-image: url(${props => props.image}); */
     position: relative;
     .overlay {
         z-index: 1;
@@ -38,6 +62,7 @@ const Container = styled.div`
         z-index: 2;
         overflow: hidden;
     }
+    
 
 `
 
@@ -46,13 +71,25 @@ class Banner extends Component {
         super(props)
         // let image = vegetables[Math.floor(Math.random() * vegetables.length)].img
         let image = "background.jpg"
-        this.state = { image }
+        this.state = { image, status: "closed" }
+    }
+    clickHandler = () => {
+        if (this.state.status === "closed") {
+            this.setState({ status: "open" })
+            return
+        }
+        this.setState({ status: "closed" })
     }
     render() {
         return <>
-            <Container image={this.state.image}>
-                <div className="overlay"></div>
-                <div className="msg">
+            <Container image={this.state.image} status={this.state.status}>
+                <div className="overlay" onClick={this.clickHandler}>
+                    {(this.state.status === "open") && [
+                        <p>find recipes based on ingredients</p>,
+                        <div>recipes provided by allrecipes</div>
+                    ]}
+                </div>
+                <div className="msg" onClick={this.clickHandler}>
                     <svg width="492" height="96" viewBox="0 0 492 96" xmlns="http://www.w3.org/2000/svg">
                         <path id="1" d="M28.4 22.5C35.1333 22.5 40.4666 24.4667 44.4 28.4C48.4 32.2667 50.4 37.9667 50.4 45.5V76H40.8V46.6C40.8 41.4667 39.5666 37.6 37.1 35C34.6333 32.4 31.1 31.1 26.5 31.1C21.3 31.1 17.2 32.6333 14.2 35.7C11.2 38.7 9.69998 43.0333 9.69998 48.7V76H0.0999756V23H9.29998V31C11.2333 28.2667 13.8333 26.1667 17.1 24.7C20.4333 23.2333 24.2 22.5 28.4 22.5Z" fill="black" />
                         <path id="2" d="M119.159 23V68.8C119.159 78.0667 116.859 84.9 112.259 89.3C107.659 93.7667 100.793 96 91.6594 96C86.6594 96 81.8927 95.3 77.3594 93.9C72.826 92.5667 69.1594 90.6333 66.3594 88.1L70.9594 80.7C73.426 82.8333 76.4593 84.5 80.0593 85.7C83.726 86.9667 87.4927 87.6 91.3594 87.6C97.5594 87.6 102.126 86.1333 105.059 83.2C108.059 80.2667 109.559 75.8 109.559 69.8V65.6C107.293 68.3333 104.493 70.4 101.159 71.8C97.8927 73.1333 94.326 73.8 90.4594 73.8C85.3927 73.8 80.7927 72.7333 76.6593 70.6C72.5927 68.4 69.3927 65.3667 67.0593 61.5C64.726 57.5667 63.5593 53.1 63.5593 48.1C63.5593 43.1 64.726 38.6667 67.0593 34.8C69.3927 30.8667 72.5927 27.8333 76.6593 25.7C80.7927 23.5667 85.3927 22.5 90.4594 22.5C94.4594 22.5 98.1593 23.2333 101.559 24.7C105.026 26.1667 107.859 28.3333 110.059 31.2V23H119.159ZM91.5593 65.4C95.026 65.4 98.126 64.6667 100.859 63.2C103.659 61.7333 105.826 59.7 107.359 57.1C108.959 54.4333 109.759 51.4333 109.759 48.1C109.759 42.9667 108.059 38.8333 104.659 35.7C101.259 32.5 96.8927 30.9 91.5593 30.9C86.1593 30.9 81.7594 32.5 78.3594 35.7C74.9594 38.8333 73.2594 42.9667 73.2594 48.1C73.2594 51.4333 74.026 54.4333 75.5593 57.1C77.1593 59.7 79.326 61.7333 82.0593 63.2C84.8593 64.6667 88.026 65.4 91.5593 65.4Z" fill="black" />

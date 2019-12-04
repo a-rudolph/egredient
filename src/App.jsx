@@ -35,7 +35,15 @@ class UnconnectedApp extends Component {
           <Navbar />
           <Auth />
           <div className="content">
-            <Route exact={true} render={() => <Landing></Landing>} />
+            <Route exact={true} path="/" render={() => <Landing></Landing>} />
+
+            <div className="background">
+              <Route
+                exact={true}
+                path="/new-recipe"
+                render={() => <RecipeForm></RecipeForm>}
+              />
+            </div>
           </div>
         </BrowserRouter>
       </>

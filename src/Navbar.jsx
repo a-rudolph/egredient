@@ -115,7 +115,7 @@ class UnconnectedNavbar extends Component {
           <Link className="dropdown-elem" id="favs" to="/">
             favourites
           </Link>
-          <Link className="dropdown-elem" id="new-recipe" to="/">
+          <Link className="dropdown-elem" id="new-recipe" to="/new-recipe">
             new recipe
           </Link>
           <Link className="dropdown-elem" id="settings" to="/">

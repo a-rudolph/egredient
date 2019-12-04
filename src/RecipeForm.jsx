@@ -2,41 +2,41 @@ import React, { Component } from "react";
 import { tags } from "./data.js";
 import styled from "styled-components";
 
-const Form = styled.div`
-  background-color: #455931;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 4px 0 rgba(0, 0, 0, 0.19);
-  display: flex;
-  flex-direction: column;
-  width: 70vw;
-  padding: 20px;
-  color: #bf4904;
+const Container = styled.div`
+  padding: 50px;
   input,
   textarea {
     padding: 5px;
-    background-color: #02402e;
-    color: whitesmoke;
+    background-color: whitesmoke;
+    color: #0e2616;
     border: 1px solid;
+    width: 90%;
   }
   .tags {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
   }
   textarea {
     resize: none;
   }
+
+  display: flex;
+
   #top {
-    display: flex;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: auto auto;
     div {
+      width: 25vw;
       flex-direction: column;
     }
   }
   label.image {
     cursor: pointer;
-    height: 300px;
     img {
+      height: 250px;
       object-fit: scale-down;
-      height: 100%;
     }
     #file {
       display: none;
@@ -44,22 +44,21 @@ const Form = styled.div`
   }
 `;
 const Tag = styled.label`
-  border-radius: 30px;
   padding: 2px 10px;
-  margin: 5px;
   user-select: none;
-  background-color: ${props => {
-    if (props.checked === "active") return "#02402e";
-    return "#b7ffb1";
-  }};
-  color: ${props => {
-    if (props.checked === "active") return "#b7ffb1";
-    return "#02402e";
+  border-bottom: 1px solid;
+  background-color: whitesmoke;
+  border-right: ${props => {
+    if (props.checked === "active") return "4px solid #02402e";
+    return "4px solid whitesmoke";
   }};
   &:hover {
-    background-color: ${props => {
-      if (props.checked === "active") return "#02402e";
-      return "#72ba6b";
+    ${props => {
+      if (props.checked === "active") return "";
+      return `
+        border-right: 4px solid #02402e
+        background-color: rgb(185, 185, 185);
+        `;
     }};
   }
   input {
@@ -74,6 +73,7 @@ const INITIAL_STATE = {
   description: "",
   ingredients: "",
   steps: "",
+  tagText: "",
   tags: {},
   imgMsg: "upload an image"
 };
@@ -149,80 +149,120 @@ class RecipeForm extends Component {
     });
   };
   renderTags = () => {
-    return tags.map(tag => {
-      if (this.state.tags[tag] !== undefined) {
+    let ret = [];
+    let customTags = this.state.tagText.split(/\n|\s/);
+    ret.push(
+      tags.map(tag => {
+        if (this.state.tags[tag] !== undefined) {
+          return (
+            <Tag key={tag} checked="active">
+              <input
+                type="checkbox"
+                onChange={this.tagHandler}
+                id={tag}
+              ></input>
+              {tag}
+            </Tag>
+          );
+        }
         return (
-          <Tag key={tag} checked="active">
+          <Tag key={tag}>
             <input type="checkbox" onChange={this.tagHandler} id={tag}></input>
             {tag}
           </Tag>
         );
+      })
+    );
+
+    customTags.forEach((tag, i) => {
+      if (tag !== "") {
+        ret.push(
+          <Tag key={i} checked="active">
+            {tag}
+          </Tag>
+        );
       }
-      return (
-        <Tag key={tag}>
-          <input type="checkbox" onChange={this.tagHandler} id={tag}></input>
-          {tag}
-        </Tag>
-      );
     });
+    return ret;
   };
+
   render = () => {
     console.log("rendering state, ", this.state);
     return (
-      <Form>
-        <div id="top">
-          <div>
-            <input
-              id="title"
-              placeholder="title"
-              autoComplete="off"
-              type="text"
-              onChange={this.changeHandler}
-              value={this.state.title}
-            />
-            <input
-              id="description"
-              placeholder="description"
-              type="text"
-              autoComplete="off"
-              onChange={this.changeHandler}
-              value={this.state.description}
-            />
-          </div>
-          <label className="image">
-            <img src={this.state.image} alt="Preview" />
-            <div>{this.state.imgMsg}</div>
+      <Container className="background">
+        <div className="form">
+          New Recipe
+          <div id="top">
             <div>
-              <input
-                type="file"
-                id="file"
-                name="file"
-                placeholder="Upload an Image"
-                required
-                onChange={this.uploadFile}
-              ></input>
+              <label className="image">
+                <img src={this.state.image} alt="Preview" />
+                <div>{this.state.imgMsg}</div>
+                <div>
+                  <input
+                    type="file"
+                    id="file"
+                    name="file"
+                    placeholder="Upload an Image"
+                    required
+                    onChange={this.uploadFile}
+                  ></input>
+                </div>
+              </label>
             </div>
-          </label>
+            <div>
+              <div>
+                Title
+                <input
+                  id="title"
+                  placeholder="name your dish"
+                  autoComplete="off"
+                  type="text"
+                  onChange={this.changeHandler}
+                  value={this.state.title}
+                />
+              </div>
+              <div>
+                Description
+                <textarea
+                  id="description"
+                  placeholder="describe your dish"
+                  rows="4"
+                  autoComplete="off"
+                  onChange={this.changeHandler}
+                  value={this.state.description}
+                />
+                Add tags
+                <textarea
+                  id="tagText"
+                  placeholder="write your own or choose from the list on the right"
+                  rows="4"
+                  autoComplete="off"
+                  onChange={this.changeHandler}
+                  value={this.state.tagText}
+                />
+              </div>
+            </div>
+          </div>
+          <textarea
+            id="ingredients"
+            rows="4"
+            cols="50"
+            placeholder="write each ingredient on a new line"
+            onChange={this.changeHandler}
+            value={this.state.ingredients}
+          />
+          <textarea
+            id="steps"
+            rows="4"
+            cols="50"
+            placeholder="write each step on a new line"
+            onChange={this.changeHandler}
+            value={this.state.steps}
+          />
+          <button onClick={this.submitHandler}>Submit</button>
         </div>
-        <textarea
-          id="ingredients"
-          rows="4"
-          cols="50"
-          placeholder="write each ingredient on a new line"
-          onChange={this.changeHandler}
-          value={this.state.ingredients}
-        />
-        <textarea
-          id="steps"
-          rows="4"
-          cols="50"
-          placeholder="write each step on a new line"
-          onChange={this.changeHandler}
-          value={this.state.steps}
-        />
         <div className="tags">{this.renderTags()}</div>
-        <button onClick={this.submitHandler}>Submit</button>
-      </Form>
+      </Container>
     );
   };
 }
