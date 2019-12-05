@@ -55,6 +55,20 @@ class UnconnectedNavbar extends Component {
     super(props);
     this.state = { active: "none" };
   }
+  logoutHandler = () => {
+    fetch("/logout")
+      .then(resp => {
+        return resp.text();
+      })
+      .then(body => {
+        let response = JSON.parse(body);
+        if (response.success) {
+          this.props.logout();
+          return;
+        }
+        console.log("logout failed");
+      });
+  };
 
   renderDropdown = () => {
     if (this.props.isLoggedIn) {
@@ -63,7 +77,7 @@ class UnconnectedNavbar extends Component {
           <Link className="dropdown-elem" id="favs" to="/">
             favourites
           </Link>
-          <Link className="dropdown-elem" id="new-recipe" to="/">
+          <Link className="dropdown-elem" id="new-recipe" to="/newRecipe">
             new recipe
           </Link>
           <Link className="dropdown-elem" id="settings" to="/">
@@ -72,7 +86,7 @@ class UnconnectedNavbar extends Component {
           <button
             className="dropdown-elem"
             id="logout"
-            onClick={this.props.logout}
+            onClick={this.logoutHandler}
           >
             logout
           </button>

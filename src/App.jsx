@@ -24,8 +24,12 @@ class UnconnectedApp extends Component {
         }
       });
   }
+  renderHome = () => {};
   renderBrowse = () => {};
   renderRecipe = () => {};
+  renderNewRecipe = () => {
+    return <RecipeForm />;
+  };
 
   render = () => {
     return (
@@ -33,7 +37,14 @@ class UnconnectedApp extends Component {
         <BrowserRouter>
           <Navbar />
           <Auth />
-          <div className="content">{/* <RecipeForm /> */}</div>
+          <div className="content">
+            <Route exact={true} path="/" render={this.renderHome} />
+            <Route
+              exact={true}
+              path="/newRecipe"
+              render={this.renderNewRecipe}
+            />
+          </div>
         </BrowserRouter>
       </>
     );
