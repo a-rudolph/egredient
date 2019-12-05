@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import RecipeForm from "./RecipeForm.jsx";
 import Navbar from "./Navbar.jsx";
 import Auth from "./Auth.jsx";
+import Landing from "./Landing.jsx";
+import RecipeForm from "./RecipeForm.jsx";
 import Testing from "./Testing.jsx";
 import { LOGIN } from "./globals.js";
 
@@ -38,12 +39,15 @@ class UnconnectedApp extends Component {
           <Navbar />
           <Auth />
           <div className="content">
-            <Route exact={true} path="/" render={this.renderHome} />
-            <Route
-              exact={true}
-              path="/newRecipe"
-              render={this.renderNewRecipe}
-            />
+            <Route exact={true} path="/" render={() => <Landing></Landing>} />
+
+            <div className="background">
+              <Route
+                exact={true}
+                path="/new-recipe"
+                render={() => <RecipeForm></RecipeForm>}
+              />
+            </div>
           </div>
         </BrowserRouter>
       </>

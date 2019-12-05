@@ -32,14 +32,26 @@
   color: #bf4904;
 }
 
-body {
-  background-color: rgba(0, 0, 0, 0.5);
-  background: url("/background.jpg");
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  color: #bf4904;
+* {
+  font-family: "Montserrat", sans-serif;
 }
+
+body {
+  background: url("/background.jpg") no-repeat;
+  background-size: cover;
+  background-color: whitesmoke;
+  margin: 0;
+  width: 100%;
+  color: black;
+}
+.background {
+  background-color: whitesmoke;
+  background-image: url("/batthern.png");
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 input,
 textarea {
   outline: transparent;
@@ -51,7 +63,7 @@ textarea {
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .popup {
@@ -73,4 +85,5 @@ textarea {
   justify-content: center;
   width: 100%;
   margin-top: 50px;
+  height: calc(100vh - 50px);
 }

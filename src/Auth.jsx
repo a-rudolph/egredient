@@ -20,19 +20,14 @@ const Auth = styled.div`
       visibility: visible;
     }
   }
-  position: fixed;
-  left: 0;
-  top: 0;
   z-index: 10;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
   .modal-content {
     background-color: rgba(255, 255, 255);
     border-radius: 10px;
-    margin: 5% auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
     padding: 20px;
     border: 1px solid #888;
     width: 300px;
@@ -49,6 +44,48 @@ const Auth = styled.div`
       cursor: pointer;
     }
   }
+  h3 {
+    text-align: left;
+    padding-left: 60px;
+    margin-bottom: 0.5rem;
+  }
+  .form-holder {
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      input {
+        margin: 5px 20px;
+        padding: 3px;
+        background-color: whitesmoke;
+        border: none;
+        text-align: center;
+        &:hover {
+          outline: 1px solid rgba(0, 0, 0, 0.2);
+        }
+        &:focus {
+          outline: 1px solid rgba(0, 0, 0, 0.2);
+        }
+      }
+      button {
+        margin: 0 20px 10px 20px;
+      }
+    }
+  }
+  a {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+  }
+  .invalid {
+    content: ${props => {
+      if (props.invalid) return "invalid username or password";
+      return "";
+    }};
+    font-size: small;
+    color: red;
+    min-height: 1rem;
+  }
 `;
 
 const INITIAL_STATE = {
@@ -56,13 +93,15 @@ const INITIAL_STATE = {
   loginPassword: "",
   signupUsername: "",
   signupPassword: "",
-  confirmPassword: ""
+  confirmPassword: "",
+  loginMsg: "",
+  signupMsg: ""
 };
 
 class UnconnectedAuth extends Component {
   constructor(props) {
     super(props);
-    this.state = INITIAL_STATE;
+    this.state = { ...INITIAL_STATE };
   }
   changeHandler = ev => {
     this.setState({ [ev.target.id]: ev.target.value });
@@ -87,14 +126,14 @@ class UnconnectedAuth extends Component {
           return;
         }
         console.log("failed login");
-        alert("invalid username or password");
+        this.setState({ loginMsg: "invalid username or password" });
       });
   };
   signupHandler = ev => {
     ev.preventDefault();
     console.log("submitting signup");
     if (this.state.signupPassword !== this.state.confirmPassword) {
-      alert("passwords don't match");
+      this.setState({ signupMsg: "please enter matching passwords" });
       return;
     }
     let username = this.state.signupUsername;
@@ -112,11 +151,11 @@ class UnconnectedAuth extends Component {
           this.closeHandler();
           return;
         }
-        alert("invalid username or password");
+        this.setState({ signupMsg: "username is taken" });
       });
   };
   closeHandler = () => {
-    this.setState(INITIAL_STATE);
+    this.setState({ ...INITIAL_STATE });
     this.props.close();
   };
   renderForm = () => {
@@ -127,27 +166,27 @@ class UnconnectedAuth extends Component {
           <div className="form-holder">
             <form onSubmit={this.loginHandler}>
               <input
+                autoFocus
                 type="text"
-                placeholder="Username"
+                placeholder="username"
                 id="loginUsername"
                 value={this.state.loginUsername}
                 onChange={this.changeHandler}
               />
               <input
                 type="password"
-                placeholder="Password"
+                placeholder="password"
                 id="loginPassword"
                 value={this.state.loginPassword}
                 onChange={this.changeHandler}
               />
-              <input
-                type="submit"
-                className="button"
-                value="log me in!"
-              ></input>
+              <div className="invalid">{this.state.loginMsg}</div>
+              <button type="submit" className="button">
+                log me in
+              </button>
             </form>
+            <a onClick={this.props.toSignup}>Don't have an account?</a>
           </div>
-          <a onClick={this.props.toSignup}>Don't have an account?</a>
         </>
       );
     }
@@ -158,14 +197,14 @@ class UnconnectedAuth extends Component {
           <form onSubmit={this.signupHandler}>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="username"
               id="signupUsername"
               value={this.state.signupUsername}
               onChange={this.changeHandler}
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="password"
               id="signupPassword"
               value={this.state.signupPassword}
               onChange={this.changeHandler}
@@ -177,10 +216,13 @@ class UnconnectedAuth extends Component {
               value={this.state.confirmPassword}
               onChange={this.changeHandler}
             />
-            <input type="submit" className="button" value="sign me up!"></input>
+            <div className="invalid">{this.state.signupMsg}</div>
+            <button type="submit" className="button">
+              sign me up!
+            </button>
           </form>
+          <a onClick={this.props.toLogin}>Already have an account?</a>
         </div>
-        <a onClick={this.props.toLogin}>Already have an account?</a>
       </>
     );
   };
@@ -189,7 +231,7 @@ class UnconnectedAuth extends Component {
     // console.log("rendering with state, ", this.state);
     return (
       <>
-        <Auth className="modal" show={this.props.display}>
+        <Auth className="overlay" show={this.props.display}>
           <div className="modal-content">
             <span id="close" onClick={this.closeHandler}>
               &times;

@@ -5,23 +5,13 @@ const tags = [
   "dessert",
   "healthy",
   "spicy",
-  "gourmet",
   "budget",
   "french",
   "chinese",
-  "indian",
-  "japanese",
   "rustic",
   "sweet",
   "salad",
-  "appetizer",
-  "vegetarian",
-  "vegan",
-  "seafood",
-  "holiday",
-  "family",
-  "baking",
-  "simple"
+  "vegan"
 ];
 
 const vegetables = [
