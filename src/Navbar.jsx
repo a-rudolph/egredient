@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import NavSearch from "./NavSearch.jsx";
 import { FaCaretDown } from "react-icons/fa";
 import { MODAL, LOGOUT } from "./globals.js";
-import { get } from "http";
 
 const Nav = styled.div`
   display: grid;
@@ -170,7 +170,7 @@ class UnconnectedNavbar extends Component {
         <Link className="nav-elem" id="name" to="/">
           ngredient
         </Link>
-        <div id="placeholder"></div>
+        <NavSearch />
         <Link className="nav-elem" id="recipes" to="/recipes">
           <div>recipes</div>
         </Link>

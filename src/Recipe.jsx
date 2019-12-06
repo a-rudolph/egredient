@@ -28,12 +28,10 @@ const Background = styled.div`
     .hide {
       transform: scaleY(0);
       transform-origin: top;
-      height: 0;
     }
     .show {
       transform: scaleY(1);
       transform-origin: top;
-      height: auto;
     }
     .list {
       transition: all 0.3s ease-in-out;
