@@ -26,6 +26,12 @@ monday dec 2 {
     find website examples
 }
 
-thursdau {
+thursday {
     recipe page
+    navsearch
+
+}
+friday {
+    recipeSearch display/cards;
+    browsing page
 }

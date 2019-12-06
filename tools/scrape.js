@@ -20,6 +20,10 @@ let newRecipe = async url => {
       let ingredients = Array.from($(`span[itemprop=recipeIngredient]`));
       return ingredients.map(el => {
         let ingredient = $(el).text();
+        // console.log($(el).parent);
+        // if ($(el).parent.class !== "checkList__item") {
+        //   return "<b>" + ingredient + "</b>";
+        // }
         return ingredient;
       });
     };
@@ -136,7 +140,7 @@ let getVegetables = async url => {
 /** enter the url you want and call the function to scrape */
 
 let url =
-  "https://www.allrecipes.com/recipe/17897/hungarian-mushroom-soup/?internalSource=previously%20viewed&referringContentType=Homepage";
+  "https://www.allrecipes.com/recipe/230050/kale-quinoa-and-avocado-salad-with-lemon-dijon-vinaigrette/?internalSource=hub%20recipe&referringContentType=Search";
 
 newRecipe(url);
 // getVegetables();

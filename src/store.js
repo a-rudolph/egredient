@@ -1,10 +1,11 @@
 import { createStore } from "redux";
-import { LOGIN, MODAL, LOGOUT } from "./globals.js";
+import { LOGIN, MODAL, LOGOUT, QUERY } from "./globals.js";
 
 const INITIAL_STATE = {
   activeUser: "guest",
   loggedIn: false,
-  modal: "none"
+  modal: "none",
+  searchQuery: ""
 };
 
 let reducer = (state, action) => {
@@ -17,6 +18,9 @@ let reducer = (state, action) => {
     }
     case LOGOUT: {
       return { ...INITIAL_STATE };
+    }
+    case QUERY: {
+      return { ...state, searchQuery: action.query };
     }
     default: {
       return state;

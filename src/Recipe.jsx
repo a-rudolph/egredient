@@ -26,6 +26,7 @@ const Background = styled.div`
       padding: 0 60px;
     }
     .hide {
+      height: 0;
       transform: scaleY(0);
       transform-origin: top;
     }
@@ -59,33 +60,41 @@ class Recipe extends Component {
     super(props);
     this.state = { ingredients: false, steps: false };
     this.recipe = {
-      title: "Hungarian Mushroom Soup",
-      chef: "Le Chadam",
+      title: "Kale, Quinoa, and Avocado Salad with Lemon Dijon Vinaigrette",
       description:
-        "\nMy family loves soup and this is one of their favorites. It has lots of flavor and is fairly quick to make. It's primarily a mushroom soup but derives a lot of its flavor from other ingredients.        ",
-      image: "https://images.media-allrecipes.com/userphotos/560x315/8261.jpg",
-      tags: ["Soups, Stews and Chili", "Soup", "Vegetable Soup"],
+        "\nSteaming the kale removes some of the bitterness. The salad dressing ties all the flavors together. A quartet of super foods (kale, quinoa, avocado, and olive oil) make this a healthy meal!        ",
+      image:
+        "https://images.media-allrecipes.com/userphotos/560x315/4539934.jpg",
+      tags: [
+        "Side Dish",
+        "Sauces and Condiments",
+        "Salad Dressings",
+        "Vinaigrette Dressing"
+      ],
       ingredients: [
-        "4 tablespoons unsalted butter",
-        "2 cups chopped onions",
-        "1 pound fresh mushrooms, sliced",
-        "2 teaspoons dried dill weed",
-        "1 tablespoon paprika",
-        "1 tablespoon soy sauce",
-        "2 cups chicken broth",
-        "1 cup milk",
-        "3 tablespoons all-purpose flour",
-        "1 teaspoon salt",
-        "ground black pepper to taste",
-        "2 teaspoons lemon juice",
-        "1/4 cup chopped fresh parsley",
-        "1/2 cup sour cream"
+        "Salad",
+        "2/3 cup quinoa",
+        "1 1/3 cups water",
+        "1 bunch kale, torn into bite-sized pieces",
+        "1/2 avocado - peeled, pitted, and diced",
+        "1/2 cup chopped cucumber",
+        "1/3 cup chopped red bell pepper",
+        "2 tablespoons chopped red onion",
+        "1 tablespoon crumbled feta cheese",
+        "Dressing",
+        "1/4 cup olive oil",
+        "2 tablespoons lemon juice",
+        "1 1/2 tablespoons Dijon mustard",
+        "3/4 teaspoon sea salt",
+        "1/4 teaspoon ground black pepper"
       ],
       steps: [
-        "Melt the butter in a large pot over medium heat. Saute the onions in the butter for 5 minutes. Add the mushrooms and saute for 5 more minutes. Stir in the dill, paprika, soy sauce and broth. Reduce heat to low, cover, and simmer for 15 minutes.",
-        "In a separate small bowl, whisk the milk and flour together. Pour this into the soup and stir well to blend. Cover and simmer for 15 more minutes, stirring occasionally.",
-        "Finally, stir in the salt, ground black pepper, lemon juice, parsley and sour cream. Mix together and allow to heat through over low heat, about 3 to 5 minutes. Do not boil. Serve immediately."
+        "Bring the quinoa and 1 1/3 cup water to a boil in a saucepan. Reduce heat to medium-low, cover, and simmer until the quinoa is tender, and the water has been absorbed, about 15 to 20 minutes. Set aside to cool.",
+        "Place kale in a steamer basket over 1 inch of boiling water in a saucepan. Cover saucepan with a lid and steam kale until hot, about 45 seconds; transfer to a large plate. Top kale with quinoa, avocado, cucumber, bell pepper, red onion, and feta cheese.",
+        "Whisk olive oil, lemon juice, Dijon mustard, sea salt, and black pepper together in a bowl until the oil emulsifies into the dressing; pour over the salad.",
+        ""
       ],
+      chef: "Le Chadam",
       date: new Date(),
       rid: "1413545345"
     };
@@ -115,7 +124,7 @@ class Recipe extends Component {
           </div>
           <div className="flex middle">
             <img src={this.recipe.image} />
-            <div className="description">{this.recipe.description}</div>
+            <div className="description">"{this.recipe.description}"</div>
           </div>
           <h2 id="ingredients" onClick={this.clickHandler}>
             Ingredients
