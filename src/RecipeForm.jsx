@@ -157,9 +157,10 @@ class RecipeForm extends Component {
   };
   renderTags = () => {
     let ret = [];
+    let sampleTags = tags.slice(0, 10);
     let customTags = this.state.tagText.split(/\n|\s/);
     ret.push(
-      tags.map(tag => {
+      sampleTags.map(tag => {
         if (this.state.tags[tag] !== undefined) {
           return (
             <Tag key={tag} checked="active">

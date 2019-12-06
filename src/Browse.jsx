@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { QUERY } from "./globals.js";
 import { tags } from "./DATA.js";
+import RecipePreview from "./RecipePreview.jsx";
 
 const Recipes = styled.div`
   .container {
@@ -23,7 +24,7 @@ const Recipes = styled.div`
   }
   .search {
     background-color: #dee9ed;
-    height: 20vh;
+    height: 10vh;
     padding-top: 10vh;
     div {
       font-size: x-large;
@@ -52,9 +53,12 @@ const Recipes = styled.div`
   }
   .results {
     min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .tags {
+    float: left;
     padding: 0 0 0 40px;
     display: flex;
     flex-direction: column;
@@ -118,7 +122,11 @@ class UnconnectedBrowse extends Component {
   }
 
   renderSearchResults = () => {
-    return <></>;
+    return (
+      <>
+        <RecipePreview />
+      </>
+    );
   };
 
   renderTags = () => {
@@ -190,7 +198,7 @@ class UnconnectedBrowse extends Component {
             recent tags
           </div>
           <div className="tags panel">{this.renderTags()}</div>
-          <div className="results panel"></div>
+          <div className="results panel">{this.renderSearchResults()}</div>
         </div>
       </Recipes>
     );

@@ -45,10 +45,6 @@ const Nav = styled.div`
     }
   }
 
-  /* a.nav-elem:hover {
-    background-color: #0e2616;
-    color: whitesmoke;
-  } */
   .dropdown {
     display: inline-block;
   }
@@ -92,20 +88,6 @@ class UnconnectedNavbar extends Component {
     super(props);
     this.state = { active: "none" };
   }
-  logoutHandler = () => {
-    fetch("/logout")
-      .then(resp => {
-        return resp.text();
-      })
-      .then(body => {
-        let response = JSON.parse(body);
-        if (response.success) {
-          this.props.logout();
-          return;
-        }
-        console.log("logout failed");
-      });
-  };
 
   logoutHandler = () => {
     fetch("/logout")

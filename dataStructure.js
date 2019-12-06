@@ -25,7 +25,7 @@ let recipes = {
   steps: [],
   tags: []
 };
-
+/** info on recipePreview.. title, image, rating */
 // let recipeByIngredients = { // for searching purposes
 //   rid: "",
 //   ing1: 1,
