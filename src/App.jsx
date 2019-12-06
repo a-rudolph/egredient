@@ -5,7 +5,8 @@ import Navbar from "./Navbar.jsx";
 import Auth from "./Auth.jsx";
 import Landing from "./Landing.jsx";
 import RecipeForm from "./RecipeForm.jsx";
-import Testing from "./Testing.jsx";
+import Recipe from "./Recipe.jsx";
+import Search from "./Search.jsx";
 import { LOGIN } from "./globals.js";
 
 class UnconnectedApp extends Component {
@@ -27,9 +28,15 @@ class UnconnectedApp extends Component {
   }
   renderHome = () => {};
   renderBrowse = () => {};
-  renderRecipe = () => {};
+  renderRecipe = () => {
+    return <Recipe />;
+  };
   renderNewRecipe = () => {
-    return <RecipeForm />;
+    return (
+      <div className="background">
+        <RecipeForm />
+      </div>
+    );
   };
 
   render = () => {
@@ -40,14 +47,13 @@ class UnconnectedApp extends Component {
           <Auth />
           <div className="content">
             <Route exact={true} path="/" render={() => <Landing></Landing>} />
-
-            <div className="background">
-              <Route
-                exact={true}
-                path="/new-recipe"
-                render={() => <RecipeForm></RecipeForm>}
-              />
-            </div>
+            <Route exact={true} path="/recipes" render={this.renderRecipe} />
+            <Route
+              exact={true}
+              path="/new-recipe"
+              render={this.renderNewRecipe}
+            />
+            <Route exact={true} path="/ingredients" render={() => <Search />} />
           </div>
         </BrowserRouter>
       </>

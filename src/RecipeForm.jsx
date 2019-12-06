@@ -7,6 +7,7 @@ const Container = styled.div`
   padding: 20px;
   display: flex;
   background-image: none;
+  background-color: whitesmoke;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   input,
   textarea {
@@ -194,7 +195,7 @@ class RecipeForm extends Component {
   render = () => {
     console.log("rendering state, ", this.state);
     return (
-      <Container className="background">
+      <Container className="">
         <div className="form">
           New Recipe
           <div id="top">

@@ -150,7 +150,7 @@ app.post("/checkCookie", upload.none(), (req, res) => {
 
 /** RECIPES AND SUCH */
 
-app.get("/recipes", (req, res) => {});
+// app.get("/recipes", (req, res) => {});
 
 app.post("/new-recipe", upload.none(), (req, res) => {
   console.log("... new recipe: ", req.body);
@@ -190,6 +190,7 @@ app.post("/new-recipe", upload.none(), (req, res) => {
 
 /**BOILERPLATE THINGS */
 app.all("/*", (req, res, next) => {
+  console.log("sending file");
   res.sendFile(__dirname + "/build/index.html");
 });
 
