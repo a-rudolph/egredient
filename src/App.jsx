@@ -8,7 +8,7 @@ import RecipeForm from "./RecipeForm.jsx";
 import Recipe from "./Recipe.jsx";
 import Browse from "./Browse.jsx";
 import Search from "./Search.jsx";
-import { LOGIN } from "./globals.js";
+import { LOGIN, RECIPES } from "./globals.js";
 
 class UnconnectedApp extends Component {
   componentDidMount() {
@@ -26,11 +26,27 @@ class UnconnectedApp extends Component {
           this.props.login(response.username);
         }
       });
+    fetch("/get-recipes")
+      .then(resp => {
+        return resp.text();
+      })
+      .then(body => {
+        let recipes = JSON.parse(body);
+        this.props.loadRecipes(recipes);
+      });
   }
-  renderHome = () => {};
-  renderBrowse = () => {};
-  renderRecipe = () => {
-    return <Recipe />;
+  findRecipeById = id => {
+    return this.props.recipes.filter(recipe => {
+      return id == recipe.rid;
+    })[0];
+  };
+  renderRecipe = routerData => {
+    let id = routerData.match.params.rid;
+    let recipe = this.findRecipeById(id);
+    if (recipe !== undefined) {
+      return <Recipe recipe={recipe} />;
+    }
+    return <Browse />;
   };
   renderNewRecipe = () => {
     return (
@@ -57,8 +73,8 @@ class UnconnectedApp extends Component {
             <Route exact={true} path="/ingredients" render={() => <Search />} />
             <Route
               exact={true}
-              path="/recipe-example"
-              render={() => <Recipe />}
+              path="/recipe/:rid"
+              render={this.renderRecipe}
             />
           </div>
         </BrowserRouter>
@@ -67,14 +83,23 @@ class UnconnectedApp extends Component {
   };
 }
 
+let mapStateToProps = st => {
+  return {
+    recipes: st.recipes
+  };
+};
+
 let mapDispatchToProps = dispatch => {
   return {
     login: username => {
       dispatch({ type: LOGIN, username });
+    },
+    loadRecipes: recipes => {
+      dispatch({ type: RECIPES, recipes });
     }
   };
 };
 
-let App = connect(null, mapDispatchToProps)(UnconnectedApp);
+let App = connect(mapStateToProps, mapDispatchToProps)(UnconnectedApp);
 
 export default App;

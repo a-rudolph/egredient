@@ -150,7 +150,26 @@ app.post("/checkCookie", upload.none(), (req, res) => {
 
 /** RECIPES AND SUCH */
 
-// app.get("/recipes", (req, res) => {});
+app.get("/get-recipes", (req, res) => {
+  console.log("... getting recipes");
+  dbo
+    .collection(RECIPES)
+    .find({})
+    .toArray((err, arr) => {
+      if (err) {
+        console.log("error: ", err);
+        res.send(FAILURE);
+        return;
+      }
+      if (arr === null) {
+        console.log("no recipes found");
+        res.send(FAILURE);
+        return;
+      }
+      // just sending the latest 10 recipes
+      res.send(JSON.stringify(arr));
+    });
+});
 
 app.post("/new-recipe", upload.none(), (req, res) => {
   console.log("... new recipe: ", req.body);

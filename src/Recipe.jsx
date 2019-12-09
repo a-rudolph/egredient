@@ -26,26 +26,18 @@ const Background = styled.div`
     .list {
       padding: 0 60px;
     }
-    .hide {
-      height: 0;
-      transform: scaleY(0);
-      transform-origin: top;
-    }
-    .show {
-      transform: scaleY(1);
-      transform-origin: top;
-    }
-    .list {
-      transition: all 0.3s ease-in-out;
-    }
     .flex {
       display: flex;
     }
     h2#ingredients,
     h2#steps {
       margin: 0;
-      padding: 0 60px;
+      padding: 20px 60px 0 60px;
       border-bottom: 1px solid;
+    }
+    div#ingredients,
+    div#steps {
+      padding: 0 60px 20px 60px;
     }
     #ingredients {
       background-color: #dee9ed;
@@ -59,9 +51,9 @@ const Background = styled.div`
 class Recipe extends Component {
   constructor(props) {
     super(props);
-    this.state = { ingredients: false, steps: false };
-    this.recipe = { ...exampleRecipe };
+    this.recipe = { ...this.props.recipe };
   }
+
   renderIngredients = () => {
     return this.recipe.ingredients.map((ingr, i) => {
       return <li key={i}>{ingr}</li>;
@@ -71,11 +63,6 @@ class Recipe extends Component {
     return this.recipe.steps.map((step, i) => {
       return <li key={i}>{step}</li>;
     });
-  };
-  clickHandler = ev => {
-    let newState = { ...this.state, [ev.target.id]: !this.state[ev.target.id] };
-    console.log(newState);
-    this.setState(newState);
   };
   render() {
     return (
@@ -89,22 +76,12 @@ class Recipe extends Component {
             <img src={this.recipe.image} />
             <div className="description">"{this.recipe.description}"</div>
           </div>
-          <h2 id="ingredients" onClick={this.clickHandler}>
-            Ingredients
-          </h2>
-          <div
-            id="ingredients"
-            className={"list " + (this.state.ingredients ? "show" : "hide")}
-          >
+          <h2 id="ingredients">Ingredients</h2>
+          <div id="ingredients" className={"list"}>
             {this.renderIngredients()}
           </div>
-          <h2 id="steps" onClick={this.clickHandler}>
-            Steps
-          </h2>
-          <div
-            id="steps"
-            className={"list " + (this.state.steps ? "show" : "hide")}
-          >
+          <h2 id="steps">Steps</h2>
+          <div id="steps" className={"list"}>
             {this.renderSteps()}
           </div>
         </div>

@@ -127,7 +127,9 @@ class UnconnectedBrowse extends Component {
   renderSearchResults = () => {
     return (
       <>
-        <RecipePreview />
+        {this.props.recipes.map(recipe => {
+          return <RecipePreview key={recipe.rid} recipe={recipe} />;
+        })}
       </>
     );
   };
@@ -210,7 +212,8 @@ class UnconnectedBrowse extends Component {
 
 let mapStateToProps = st => {
   return {
-    query: st.searchQuery
+    query: st.searchQuery,
+    recipes: st.recipes
   };
 };
 

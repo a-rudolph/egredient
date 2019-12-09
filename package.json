@@ -7,7 +7,8 @@
     "start": "nodemon server.js",
     "build": "webpack --mode production",
     "scrape": "node tools/scrape.js",
-    "purge": "node tools/purge.js"
+    "purge": "node tools/purge.js",
+    "add-recipes": "node tools/addRecipes.js"
   },
   "keywords": [],
   "author": "Jacques Le Normand",

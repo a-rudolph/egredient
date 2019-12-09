@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { exampleRecipe } from "./globals.js";
+import { Link } from "react-router-dom";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 const Tile = styled.div`
   position: relative;
   height: 50vh;
-  width: 30vw;
+  width: 250px;
   margin: 25px;
   background-color: #dee9ed;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
@@ -91,11 +91,11 @@ class RecipePreview extends Component {
   render() {
     return (
       <Tile ingredients={this.state.ingr ? "0" : "-50vh"}>
-        <div className="image">
-          <img src={exampleRecipe.image}></img>
-        </div>
+        <Link className="image" to={"/recipe/" + this.props.recipe.rid}>
+          <img src={this.props.recipe.image}></img>
+        </Link>
         <div id="content">
-          <h3>{exampleRecipe.title}</h3>
+          <h3>{this.props.recipe.title}</h3>
         </div>
         <div className="arrow up" onClick={this.clickHandler}>
           <FaCaretUp />
@@ -106,7 +106,7 @@ class RecipePreview extends Component {
           </div>
           <h3>ingredients</h3>
           <ul>
-            {exampleRecipe.ingredients.map((ing, i) => {
+            {this.props.recipe.ingredients.map((ing, i) => {
               return <li key={i}>{ing}</li>;
             })}
           </ul>

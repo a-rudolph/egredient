@@ -2,6 +2,7 @@ const LOGIN = "login";
 const LOGOUT = "logout";
 const MODAL = "modal";
 const QUERY = "query";
+const RECIPES = "recipes";
 
 const exampleRecipe = {
   title: "Kale, Quinoa, and Avocado Salad with Lemon Dijon Vinaigrette",
@@ -42,4 +43,4 @@ const exampleRecipe = {
   rid: "1413545345"
 };
 
-export { LOGIN, LOGOUT, MODAL, QUERY, exampleRecipe };
+export { LOGIN, LOGOUT, MODAL, QUERY, RECIPES, exampleRecipe };
