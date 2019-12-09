@@ -7,6 +7,7 @@ import RecipePreview from "./RecipePreview.jsx";
 
 const Recipes = styled.div`
   .container {
+    background-image: url("batthern.png");
     margin: 0;
     padding: 0;
     width: 100%;
@@ -52,9 +53,11 @@ const Recipes = styled.div`
     }
   }
   .results {
+    margin-top: 90px;
     min-height: 100vh;
-    display: flex;
     flex-wrap: wrap;
+    justify-content: left;
+    align-items: flex-start;
   }
 
   .tags {
@@ -66,7 +69,7 @@ const Recipes = styled.div`
     font-size: large;
     width: 3em;
     height: calc(100vw - 17px);
-    background-color: transparent;
+    background-color: #dee9ed;
     overflow-y: scroll;
     transform: rotate(-90deg) translateX(-100%);
     transform-origin: left top;
@@ -106,7 +109,7 @@ const Recipes = styled.div`
     }
     .selected {
       opacity: 0.8;
-      border-left: 1px solid;
+      font-weight: bold;
     }
     .placeholder {
       border: none;
@@ -118,7 +121,7 @@ class UnconnectedBrowse extends Component {
   constructor(props) {
     super(props);
     this.state = { tags: {} };
-    this.tagData = tags.concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+    this.tagData = tags;
   }
 
   renderSearchResults = () => {
