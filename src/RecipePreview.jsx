@@ -93,10 +93,9 @@ class RecipePreview extends Component {
       <Tile ingredients={this.state.ingr ? "0" : "-50vh"}>
         <Link className="image" to={"/recipe/" + this.props.recipe.rid}>
           <img src={this.props.recipe.image}></img>
-        </Link>
-        <div id="content">
           <h3>{this.props.recipe.title}</h3>
-        </div>
+        </Link>
+        <div id="content"></div>
         <div className="arrow up" onClick={this.clickHandler}>
           <FaCaretUp />
         </div>

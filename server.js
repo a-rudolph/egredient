@@ -166,7 +166,45 @@ app.get("/get-recipes", (req, res) => {
         res.send(FAILURE);
         return;
       }
-      // just sending the latest 10 recipes
+      res.send(JSON.stringify(arr));
+    });
+});
+
+app.post("/search-recipes", upload.none(), (req, res) => {
+  console.log("... searching recipes, ", req.body);
+  let queryString = req.body.query;
+  let query = queryString.split(" ");
+  let regexQ = query.map(q => {
+    return {
+      $or: [
+        { title: { $regex: q, $options: "i" } },
+        { description: { $regex: q, $options: "i" } }
+      ]
+    };
+  });
+  let searchQuery = {};
+  searchQuery["$and"] = regexQ;
+
+  //check tags
+  if (req.body.tags !== undefined) {
+    let tagsObj = JSON.parse(req.body.tags);
+    let tags = Object.keys(tagsObj);
+    if (tags[0] !== undefined) searchQuery.tags = { $all: tags };
+  }
+  // search db
+  dbo
+    .collection(RECIPES)
+    .find(searchQuery)
+    .toArray((err, arr) => {
+      if (err) {
+        console.log("error: ", err);
+        res.send(FAILURE);
+        return;
+      }
+      if (arr === null) {
+        console.log("no recipes found");
+      }
+      console.log(arr);
       res.send(JSON.stringify(arr));
     });
 });

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { QUERY } from "./globals.js";
+import { QUERY, RECIPES } from "./globals.js";
 import { tags } from "./DATA.js";
 import RecipePreview from "./RecipePreview.jsx";
 
@@ -21,7 +21,6 @@ const Recipes = styled.div`
   #recent-tags {
     background-color: #dee9ed;
     justify-content: left;
-    padding-bottom: 10px;
   }
   .search {
     background-color: #dee9ed;
@@ -125,6 +124,7 @@ class UnconnectedBrowse extends Component {
   }
 
   renderSearchResults = () => {
+    if (this.props.recipes.length === 0) return <h3>No recipes found...</h3>;
     return (
       <>
         {this.props.recipes.map(recipe => {
@@ -175,7 +175,22 @@ class UnconnectedBrowse extends Component {
 
   submitHandler = ev => {
     ev.preventDefault();
-    console.log("submit request");
+    console.log("search request");
+    let data = new FormData();
+    data.append("query", this.props.query);
+    data.append("tags", JSON.stringify(this.state.tags));
+    fetch("/search-recipes", {
+      method: "POST",
+      body: data
+    })
+      .then(resp => {
+        return resp.text();
+      })
+      .then(body => {
+        let recipes = JSON.parse(body);
+        console.log("recipes recieved: ", recipes);
+        this.props.updateRecipes(recipes);
+      });
   };
 
   render() {
@@ -194,9 +209,7 @@ class UnconnectedBrowse extends Component {
                   onChange={this.changeHandler}
                 ></input>
               </form>
-              <button type="submit" onClick={this.clickHandler}>
-                search
-              </button>
+              <button onClick={this.submitHandler}>search</button>
             </div>
           </div>
           <div className="panel" id="recent-tags">
@@ -221,6 +234,9 @@ let mapDispatchToProps = dispatch => {
   return {
     queryChange: q => {
       dispatch({ type: QUERY, query: q });
+    },
+    updateRecipes: recipes => {
+      dispatch({ type: RECIPES, recipes });
     }
   };
 };

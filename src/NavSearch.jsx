@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { RECIPES } from "./globals.js";
 
 const Search = styled.div`
   display: flex;
@@ -37,7 +40,7 @@ const Search = styled.div`
   }
 `;
 
-class NavSearch extends Component {
+class UnconnectedNavSearch extends Component {
   constructor(props) {
     super(props);
     this.state = { query: "", open: false, opacity: "0.3" };
@@ -51,6 +54,22 @@ class NavSearch extends Component {
   };
   submitHandler = ev => {
     ev.preventDefault();
+    console.log("search request");
+    let data = new FormData();
+    data.append("query", this.state.query);
+    fetch("/search-recipes", {
+      method: "POST",
+      body: data
+    })
+      .then(resp => {
+        return resp.text();
+      })
+      .then(body => {
+        let recipes = JSON.parse(body);
+        this.props.updateRecipes(recipes);
+        this.setState({ query: "" });
+        this.props.history.push("/recipes");
+      });
   };
   render() {
     // console.log("rendering with state: ", this.state);
@@ -83,4 +102,14 @@ class NavSearch extends Component {
   }
 }
 
-export default NavSearch;
+let mapDispatchToProps = dispatch => {
+  return {
+    updateRecipes: recipes => {
+      dispatch({ type: RECIPES, recipes });
+    }
+  };
+};
+
+let NavSearch = connect(null, mapDispatchToProps)(UnconnectedNavSearch);
+
+export default withRouter(NavSearch);
