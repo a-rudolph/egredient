@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 import { FaSearch } from "react-icons/fa";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
 import { RECIPES } from "./globals.js";
 
 const Search = styled.div`
@@ -91,6 +91,7 @@ class UnconnectedNavSearch extends Component {
               <input
                 className="bar extend"
                 type="text"
+                placeholder="search recipes"
                 value={this.state.query}
                 onChange={this.changeHandler}
               ></input>

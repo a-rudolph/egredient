@@ -7,7 +7,7 @@ import Landing from "./Landing.jsx";
 import RecipeForm from "./RecipeForm.jsx";
 import Recipe from "./Recipe.jsx";
 import Browse from "./Browse.jsx";
-import Search from "./Search.jsx";
+import Ingredients from "./Ingredients.jsx";
 import { LOGIN, RECIPES } from "./globals.js";
 
 class UnconnectedApp extends Component {
@@ -70,7 +70,11 @@ class UnconnectedApp extends Component {
               path="/new-recipe"
               render={this.renderNewRecipe}
             />
-            <Route exact={true} path="/ingredients" render={() => <Search />} />
+            <Route
+              exact={true}
+              path="/ingredients"
+              render={() => <Ingredients />}
+            />
             <Route
               exact={true}
               path="/recipe/:rid"

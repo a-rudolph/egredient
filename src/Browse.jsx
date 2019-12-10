@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { QUERY, RECIPES } from "./globals.js";
 import { tags } from "./DATA.js";
-import RecipePreview from "./RecipePreview.jsx";
+import Results from "./Results.jsx";
 
 const Recipes = styled.div`
   .container {
@@ -53,10 +53,6 @@ const Recipes = styled.div`
   }
   .results {
     margin-top: 90px;
-    min-height: 100vh;
-    flex-wrap: wrap;
-    justify-content: left;
-    align-items: flex-start;
   }
 
   .tags {
@@ -123,17 +119,6 @@ class UnconnectedBrowse extends Component {
     this.tagData = tags;
   }
 
-  renderSearchResults = () => {
-    if (this.props.recipes.length === 0) return <h3>No recipes found...</h3>;
-    return (
-      <>
-        {this.props.recipes.map(recipe => {
-          return <RecipePreview key={recipe.rid} recipe={recipe} />;
-        })}
-      </>
-    );
-  };
-
   renderTags = () => {
     let tags = this.tagData;
     let ret = [];
@@ -194,7 +179,7 @@ class UnconnectedBrowse extends Component {
   };
 
   render() {
-    console.log("rendering with state, ", this.state);
+    // console.log("rendering with state, ", this.state);
     return (
       <Recipes className="background">
         <div className="container">
@@ -216,7 +201,9 @@ class UnconnectedBrowse extends Component {
             recent tags
           </div>
           <div className="tags panel">{this.renderTags()}</div>
-          <div className="results panel">{this.renderSearchResults()}</div>
+          <div className="results panel">
+            <Results />
+          </div>
         </div>
       </Recipes>
     );

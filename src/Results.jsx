@@ -1,0 +1,40 @@
+import React, { Component } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import RecipePreview from "./RecipePreview.jsx";
+
+const Div = styled.div`
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-items: flex-start;
+`;
+
+class UnconnectedResults extends Component {
+  renderSearchResults = () => {
+    if (this.props.recipes.length === 0) return <h3>No recipes found...</h3>;
+    return (
+      <>
+        {this.props.recipes.map(recipe => {
+          return <RecipePreview key={recipe.rid} recipe={recipe} />;
+        })}
+      </>
+    );
+  };
+
+  render() {
+    return <Div>{this.renderSearchResults()}</Div>;
+  }
+}
+
+let mapStateToProps = st => {
+  return {
+    recipes: st.recipes
+  };
+};
+
+let Results = connect(mapStateToProps)(UnconnectedResults);
+
+export default Results;
