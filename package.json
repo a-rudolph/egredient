@@ -1,17 +1,16 @@
 {
-  "name": "webpack-react-tutorial",
+  "name": "ngredient-a-final-project",
   "version": "1.0.0",
-  "description": "",
+  "description": "boilerplate by: Jacques Le Normand",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
     "build": "webpack --mode production",
     "scrape": "node tools/scrape.js",
-    "purge": "node tools/purge.js",
-    "add-recipes": "node tools/addRecipes.js"
+    "purge": "node tools/purge.js"
   },
   "keywords": [],
-  "author": "Jacques Le Normand",
+  "author": "Adam Rudolph",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.2.2",
