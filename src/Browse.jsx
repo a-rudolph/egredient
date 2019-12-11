@@ -87,6 +87,7 @@ const Recipes = styled.div`
       }
     }
     .tag {
+      white-space: nowrap;
       user-select: none;
       width: 6em;
       font-size: large;
@@ -116,10 +117,29 @@ class UnconnectedBrowse extends Component {
   constructor(props) {
     super(props);
     this.state = { tags: {} };
-    this.tagData = tags;
+    this.tagData = [];
   }
-
+  componentDidMount() {
+    fetch("/tags")
+      .then(resp => {
+        return resp.text();
+      })
+      .then(body => {
+        let parsed = JSON.parse(body);
+        if (parsed.success === false) {
+          console.log("tags not found");
+          return;
+        }
+        this.tagData = parsed;
+      });
+  }
   renderTags = () => {
+    let cropTag = str => {
+      if (str.length < 8) {
+        return str;
+      }
+      return str.slice(0, 7) + "...";
+    };
     let tags = this.tagData;
     let ret = [];
     tags.forEach((tag, i) => {
@@ -131,13 +151,17 @@ class UnconnectedBrowse extends Component {
             key={i}
             onClick={this.tagHandler}
           >
-            {tag}
+            <span title={tag} id={tag}>
+              {cropTag(tag)}
+            </span>
           </div>
         );
       } else {
         ret.push(
           <div className="tag" id={tag} key={i} onClick={this.tagHandler}>
-            {tag}
+            <span title={tag} id={tag}>
+              {cropTag(tag)}
+            </span>
           </div>
         );
       }
@@ -147,6 +171,7 @@ class UnconnectedBrowse extends Component {
   tagHandler = ev => {
     let tags = { ...this.state.tags };
     let tag = ev.target.id;
+    // console.log(tag);
     if (tags[tag] !== undefined) {
       delete tags[tag];
     } else {
@@ -173,7 +198,7 @@ class UnconnectedBrowse extends Component {
       })
       .then(body => {
         let recipes = JSON.parse(body);
-        console.log("recipes recieved: ", recipes);
+        // console.log("recipes recieved: ", recipes);
         this.props.updateRecipes(recipes);
       });
   };

@@ -150,6 +150,36 @@ app.post("/checkCookie", upload.none(), (req, res) => {
 
 /** RECIPES AND SUCH */
 
+app.get("/tags", (req, res) => {
+  console.log("... getting tags");
+  dbo
+    .collection(RECIPES)
+    .find({}, { tags: 1 })
+    .toArray((err, arr) => {
+      if (err) {
+        console.log("error: ", err);
+        res.send(FAILURE);
+        return;
+      }
+      if (arr === null) {
+        console.log("no recipes found");
+        res.send(FAILURE);
+        return;
+      }
+      // arr [{ tags: [...] }, { tags: [...] }, ...]
+      let uniqueTags = {};
+      arr.forEach(rec => {
+        rec.tags.forEach(tag => {
+          if (uniqueTags[tag] === undefined) {
+            uniqueTags[tag] = 1;
+          }
+        });
+      });
+      let tagArray = Object.keys(uniqueTags);
+      res.send(JSON.stringify(tagArray));
+    });
+});
+
 app.get("/get-recipes", (req, res) => {
   console.log("... getting recipes");
   dbo
@@ -189,7 +219,7 @@ app.post("/search-recipes", upload.none(), (req, res) => {
   if (req.body.tags !== undefined) {
     let tagsObj = JSON.parse(req.body.tags);
     let tags = Object.keys(tagsObj);
-    if (tags[0] !== undefined) searchQuery.tags = { $all: tags };
+    if (tags.length !== 0) searchQuery.tags = { $all: tags };
   }
   // search db
   dbo
@@ -204,8 +234,7 @@ app.post("/search-recipes", upload.none(), (req, res) => {
       if (arr === null) {
         console.log("no recipes found");
       }
-      console.log(arr);
-      res.send(JSON.stringify(arr));
+      res.send(JSON.stringify(arr.slice(-20)));
     });
 });
 
@@ -249,7 +278,6 @@ app.post("/search-ingredients", upload.none(), (req, res) => {
       if (arr === null) {
         console.log("no recipes found");
       }
-      console.log(arr);
       res.send(JSON.stringify(arr));
     });
 });
