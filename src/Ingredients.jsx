@@ -16,10 +16,61 @@ const Search = styled.div`
     padding: 0;
   }
   .panel {
-    padding: 50px;
-  }
-  .blue {
     background-color: #dee9ed;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    .form-holder {
+      padding: 50px 0 50px 50px;
+      display: flex;
+      align-items: center;
+      form {
+        div {
+          width: 100%;
+          button {
+            width: inherit;
+          }
+        }
+      }
+    }
+  }
+  .criteria-holder {
+    padding-left: 40px;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    .criteria {
+      padding: 50px 0 0 10px;
+      border-right: 1px solid;
+    }
+    h3 {
+      margin: 0;
+    }
+    .tile-holder {
+      height: 150px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      overflow: scroll;
+    }
+    .tile {
+      border-radius: 20px;
+      margin: 5px;
+      padding: 5px 10px;
+      background: whitesmoke;
+      height: min-content;
+      vertical-align: center;
+      display: flex;
+      font-size: large;
+      .close {
+        cursor: pointer;
+        margin-left: 5px;
+        color: red;
+        opacity: 0.5;
+        font-weight: bold;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
   }
 `;
 
@@ -30,8 +81,8 @@ class UnconnectedIngredients extends Component {
       input: "",
       select: "and",
       and: {},
-      or: {},
-      not: {},
+      or: { pickle: 1 },
+      not: { anchovies: 1 },
       recipes: []
     };
   }
@@ -48,11 +99,11 @@ class UnconnectedIngredients extends Component {
   deleteHandler = ev => {
     console.log("delete handled");
     let select = ev.target.parentNode.id;
+    console.log("select, ", select);
     let temp = { ...this.state[select] };
     delete temp[ev.target.id];
     this.setState({ [select]: temp });
   };
-
   searchHandler = () => {
     console.log("search handled");
     let data = new FormData();
@@ -74,93 +125,65 @@ class UnconnectedIngredients extends Component {
       });
     return;
   };
-
-  renderAnd = () => {
-    let ands = Object.keys(this.state.and);
+  renderQueries = select => {
+    let arr = Object.keys(this.state[select]);
     return (
-      <div className="criteria">
-        <h3>includes all:</h3>
-        {ands.map((ing, i) => {
+      <div className="tile-holder scrollable">
+        {arr.map((ing, i) => {
           return (
-            <div className="tile" key={i} id="and">
+            <div className="tile" key={i} id={select}>
               {ing}{" "}
-              <span className="close" id={ing} onClick={this.deleteHandler}>
-                &times;
-              </span>
+              <div className="close" id={ing} onClick={this.deleteHandler}>
+                x
+              </div>
             </div>
           );
         })}
       </div>
     );
-  };
-  renderOr = () => {
-    let ors = Object.keys(this.state.or);
-    return (
-      <div className="criteria">
-        <h3>includes any:</h3>
-        {ors.map((ing, i) => {
-          return (
-            <div className="tile" key={i} id="or">
-              {ing}{" "}
-              <span className="close" id={ing} onClick={this.deleteHandler}>
-                &times;
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-  renderNot = () => {
-    let nots = Object.keys(this.state.not);
-    return (
-      <div className="criteria">
-        <h3>does not include:</h3>
-        {nots.map((ing, i) => {
-          return (
-            <div className="tile" key={i} id="not">
-              {ing}{" "}
-              <span className="close" id={ing} onClick={this.deleteHandler}>
-                &times;
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-  renderResults = () => {
-    return <></>;
   };
 
   render() {
-    // console.log(this.state);
+    console.log(this.state);
     return (
       <Search className="background">
         <div className="container">
-          <div className="search panel blue">
-            <form onSubmit={this.submitHandler}>
-              <input
-                id="input"
-                type="text"
-                placeholder="ingredient"
-                required
-                value={this.state.input}
-                onChange={this.changeHandler}
-              />
-              <select id="select" onChange={this.changeHandler}>
-                <option value="and">and</option>
-                <option value="or">or</option>
-                <option value="not">not</option>
-              </select>
-              <input type="submit" value="add" />
-            </form>
-            <div className="tile-holder">
-              {this.renderAnd()}
-              {this.renderOr()}
-              {this.renderNot()}
+          <div className="panel">
+            <div className="form-holder">
+              <form onSubmit={this.submitHandler}>
+                <select id="select" onChange={this.changeHandler}>
+                  <option value="and">and</option>
+                  <option value="or">or</option>
+                  <option value="not">not</option>
+                </select>
+                <input
+                  id="input"
+                  type="text"
+                  placeholder="ingredient"
+                  required
+                  value={this.state.input}
+                  onChange={this.changeHandler}
+                />
+                <input type="submit" value="add" />
+                <div>
+                  <button onClick={this.searchHandler}>Search</button>
+                </div>
+              </form>
             </div>
-            <button onClick={this.searchHandler}>Search</button>
+            <div className="criteria-holder">
+              <div className="criteria">
+                <h3>includes all:</h3>
+                {this.renderQueries("and")}
+              </div>
+              <div className="criteria">
+                <h3>includes any:</h3>
+                {this.renderQueries("or")}
+              </div>
+              <div className="criteria">
+                <h3>does not include:</h3>
+                {this.renderQueries("not")}
+              </div>
+            </div>
           </div>
         </div>
         <Results recipes={this.state.recipes} />

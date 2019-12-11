@@ -116,8 +116,7 @@ const Recipes = styled.div`
 class UnconnectedBrowse extends Component {
   constructor(props) {
     super(props);
-    this.state = { tags: {} };
-    this.tagData = [];
+    this.state = { tags: {}, tagData: [] };
   }
   componentDidMount() {
     fetch("/tags")
@@ -130,7 +129,7 @@ class UnconnectedBrowse extends Component {
           console.log("tags not found");
           return;
         }
-        this.tagData = parsed;
+        this.setState({ tagData: parsed });
       });
   }
   renderTags = () => {
@@ -140,7 +139,7 @@ class UnconnectedBrowse extends Component {
       }
       return str.slice(0, 7) + "...";
     };
-    let tags = this.tagData;
+    let tags = this.state.tagData;
     let ret = [];
     tags.forEach((tag, i) => {
       if (this.state.tags[tag] !== undefined) {

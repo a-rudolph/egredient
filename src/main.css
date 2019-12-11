@@ -94,3 +94,15 @@ textarea {
   margin-top: 50px;
   height: calc(100vh - 50px);
 }
+
+.scrollable::-webkit-scrollbar {
+  width: 5px;
+  height: 0px;
+}
+.scrollable::-webkit-scrollbar-track {
+  background-color: #dee9ed;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: #696969a1;
+}

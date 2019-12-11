@@ -13,6 +13,10 @@ i want to search for recipes
 - search by break lunch dinner dessert
 
 
+TODO {
+    better styling on recipe tiles
+}
+
 
 today {
     ingredients search {
@@ -30,7 +34,7 @@ today {
 
 tomorrow {
     favourites
-}
+} 
 
 friday {
     about us
