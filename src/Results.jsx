@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
 import RecipePreview from "./RecipePreview.jsx";
 
 const Div = styled.div`
@@ -12,7 +11,10 @@ const Div = styled.div`
   align-items: flex-start;
 `;
 
-class UnconnectedResults extends Component {
+class Results extends Component {
+  constructor(props) {
+    super(props);
+  }
   renderSearchResults = () => {
     if (this.props.recipes.length === 0) return <h3>No recipes found...</h3>;
     return (
@@ -28,13 +30,5 @@ class UnconnectedResults extends Component {
     return <Div>{this.renderSearchResults()}</Div>;
   }
 }
-
-let mapStateToProps = st => {
-  return {
-    recipes: st.recipes
-  };
-};
-
-let Results = connect(mapStateToProps)(UnconnectedResults);
 
 export default Results;

@@ -209,6 +209,51 @@ app.post("/search-recipes", upload.none(), (req, res) => {
     });
 });
 
+app.post("/search-ingredients", upload.none(), (req, res) => {
+  console.log("... searching by ingredients, ", req.body);
+  // arrays of the search criteria
+  let ands = Object.keys(JSON.parse(req.body.and));
+  let ors = Object.keys(JSON.parse(req.body.or));
+  let nots = Object.keys(JSON.parse(req.body.not));
+  // build search query
+  let query = [];
+  /** query structure
+  { $and: [
+    { ing:  { $regex: ands[0], $options: "i" } },
+    { ing:  { $regex: ands[1], $options: "i" } },
+    { ing: { $regex: ors[0]|ors[1]|ors[2], $options: "i" }},
+    { $not: { ing: { $regex: nots[0]|nots[1]|nots[2], $options: "i" }} }
+  ] }
+   */
+  ands.forEach(and => {
+    query.push({ ingredients: { $regex: and, $options: "i" } });
+  });
+  if (ors.length !== 0)
+    query.push({ ingredients: { $regex: ors.join("|"), $options: "i" } });
+  if (nots.length !== 0)
+    query.push({
+      ingredients: { $not: { $regex: nots.join("|"), $options: "i" } }
+    });
+
+  let searchQuery = { $and: query };
+
+  dbo
+    .collection(RECIPES)
+    .find(searchQuery)
+    .toArray((err, arr) => {
+      if (err) {
+        console.log("error: ", err);
+        res.send(FAILURE);
+        return;
+      }
+      if (arr === null) {
+        console.log("no recipes found");
+      }
+      console.log(arr);
+      res.send(JSON.stringify(arr));
+    });
+});
+
 app.post("/new-recipe", upload.none(), (req, res) => {
   console.log("... new recipe: ", req.body);
   //recieves: "title", "description", [ingredients], [steps], [tags]

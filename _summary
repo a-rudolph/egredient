@@ -3,8 +3,8 @@ i want sign up
 i want to login
 i want to post recipes
 i want to browse recipes
-i want to save favourites
-i want to rate and review
+i want to save favourites*
+i want to rate and review*
 
 i want to search for recipes
 - search by ingredients
@@ -12,26 +12,27 @@ i want to search for recipes
 - search by tags
 - search by break lunch dinner dessert
 
-TODO
--recipe demo
--recipe page...
--search page
--
 
-monday dec 2 {
-    main nav bar. icon, recipes, ingredients, user
-    log in
-    signup
-    checkcookie
-    find website examples
+
+today {
+    ingredients search {
+        styling {
+            criteria tiles {
+                close button,
+                images maybe
+            }
+            inputs
+            displays for criteria
+        }
+    }
+    tags
 }
 
-thursday {
-    recipe page
-    navsearch
-
+tomorrow {
+    favourites
 }
+
 friday {
-    recipeSearch display/cards;
-    browsing page
+    about us
+    footer
 }

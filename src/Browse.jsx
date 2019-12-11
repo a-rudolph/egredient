@@ -202,7 +202,7 @@ class UnconnectedBrowse extends Component {
           </div>
           <div className="tags panel">{this.renderTags()}</div>
           <div className="results panel">
-            <Results />
+            <Results recipes={this.props.recipes} />
           </div>
         </div>
       </Recipes>
