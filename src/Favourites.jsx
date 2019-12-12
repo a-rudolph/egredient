@@ -34,7 +34,11 @@ class UnconnectedFavourites extends Component {
   }
 
   render() {
-    return <Results className="container" recipes={this.state.recipes} />;
+    return (
+      <div className="background">
+        <Results recipes={this.state.recipes} />
+      </div>
+    );
   }
 }
 
