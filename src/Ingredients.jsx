@@ -1,6 +1,6 @@
 /**
  * using wiki api to get images for ingredients
- * /w/api.php?action=query&format=json&prop=pageimages&titles=parmesan&redirects=1&piprop=thumbnail%7Cname%7Coriginal
+ * https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageimages&titles=parmesan&redirects=1&piprop=thumbnail%7Cname%7Coriginal
  */
 
 import React, { Component } from "react";
@@ -45,7 +45,7 @@ const Search = styled.div`
       margin: 0;
     }
     .tile-holder {
-      height: 150px;
+      height: 200px;
       display: flex;
       flex-wrap: wrap;
       align-items: flex-start;
@@ -54,12 +54,27 @@ const Search = styled.div`
     .tile {
       border-radius: 20px;
       margin: 5px;
-      padding: 5px 10px;
       background: whitesmoke;
-      height: min-content;
-      vertical-align: center;
+      height: 125px;
+      width: 200px;
       display: flex;
+      flex-direction: column;
       font-size: large;
+      overflow: hidden;
+      .img {
+        height: 100%;
+        width: 100%;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+      .name {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        padding: 0 10px;
+      }
       .close {
         cursor: pointer;
         margin-left: 5px;
@@ -81,8 +96,8 @@ class UnconnectedIngredients extends Component {
       input: "",
       select: "and",
       and: {},
-      or: { pickle: 1 },
-      not: { anchovies: 1 },
+      or: {},
+      not: {},
       recipes: []
     };
   }
@@ -91,15 +106,31 @@ class UnconnectedIngredients extends Component {
   };
   submitHandler = ev => {
     ev.preventDefault();
+    let ingredient = this.state.input;
     let select = this.state.select;
     let temp = { ...this.state[select] };
-    temp[this.state.input] = 1;
-    this.setState({ [select]: temp, input: "" });
+    let q = ingredient.split(" ").join("%20");
+    fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageimages&titles=${ingredient}&redirects=1&piprop=thumbnail%7Cname%7Coriginal&origin=*`
+    )
+      .then(resp => {
+        return resp.text();
+      })
+      .then(body => {
+        let parsed = JSON.parse(body);
+        console.log(parsed);
+        let pages = parsed.query.pages;
+        let pageNum = Object.keys(parsed.query.pages)[0];
+        let img = pages[pageNum].original.source;
+        console.log(img);
+        temp[this.state.input] = img;
+        this.setState({ [select]: temp, input: "" });
+      });
   };
   deleteHandler = ev => {
     console.log("delete handled");
     let select = ev.target.parentNode.id;
-    console.log("select, ", select);
+    // console.log("select, ", select);
     let temp = { ...this.state[select] };
     delete temp[ev.target.id];
     this.setState({ [select]: temp });
@@ -126,15 +157,21 @@ class UnconnectedIngredients extends Component {
     return;
   };
   renderQueries = select => {
-    let arr = Object.keys(this.state[select]);
+    let obj = this.state[select];
+    let arr = Object.keys(obj);
     return (
       <div className="tile-holder scrollable">
         {arr.map((ing, i) => {
           return (
             <div className="tile" key={i} id={select}>
-              {ing}{" "}
-              <div className="close" id={ing} onClick={this.deleteHandler}>
-                x
+              <div className="img">
+                <img src={obj[ing]}></img>
+              </div>
+              <div className="name" id={select}>
+                {ing}{" "}
+                <div className="close" id={ing} onClick={this.deleteHandler}>
+                  x
+                </div>
               </div>
             </div>
           );
@@ -144,7 +181,7 @@ class UnconnectedIngredients extends Component {
   };
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <Search className="background">
         <div className="container">
@@ -180,7 +217,7 @@ class UnconnectedIngredients extends Component {
                 {this.renderQueries("or")}
               </div>
               <div className="criteria">
-                <h3>does not include:</h3>
+                <h3>not included:</h3>
                 {this.renderQueries("not")}
               </div>
             </div>
