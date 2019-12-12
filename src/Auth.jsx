@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { MODAL, LOGIN } from "./globals";
+import { MODAL, LOGIN, FAV } from "./globals";
 
 const Auth = styled.div`
   opacity: 0;
@@ -122,6 +122,7 @@ class UnconnectedAuth extends Component {
         if (response.success) {
           console.log("successful login");
           this.props.login(username);
+          this.props.updateFavs(response.favourites);
           this.closeHandler();
           return;
         }
@@ -257,6 +258,9 @@ let mapDispatchToProps = dispatch => {
     },
     login: username => {
       dispatch({ type: LOGIN, username });
+    },
+    updateFavs: favs => {
+      dispatch({ type: FAV, favs });
     }
   };
 };

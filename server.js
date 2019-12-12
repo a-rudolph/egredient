@@ -63,10 +63,6 @@ let findSingle = (query, collection) => {
   return ret;
 };
 
-let findMany = (query, collection) => {
-  return; // MORE ON THIS LATER
-};
-
 /**STATIC ENDPOINTS */
 app.use("/", express.static("build"));
 app.use("/", express.static("public"));
@@ -91,7 +87,7 @@ app.post("/signup", upload.none(), (req, res) => {
       }
       let uid = genID();
       let recipes = [];
-      let saved = [];
+      let saved = {};
       dbo.collection(AUTH).insertOne({ username, hash });
       dbo.collection(USERS).insertOne({ username, uid, recipes, saved });
       setSID(username, res); //sets sid & sends SUCCESS
@@ -110,7 +106,23 @@ app.post("/login", upload.none(), (req, res) => {
     }
     bcrypt.compare(req.body.password, found.hash).then(match => {
       if (match) {
-        setSID(username, res);
+        findSingle({ username }, SESSIONS).then(found => {
+          if (found !== null) {
+            dbo.collection(SESSIONS).deleteOne({ username });
+          }
+          let sid = genID();
+          dbo.collection(SESSIONS).insertOne({ username, sid });
+          res.cookie("sid", sid);
+          findSingle({ username }, USERS).then(found => {
+            res.send(
+              JSON.stringify({
+                success: true,
+                username,
+                favourites: found.saved
+              })
+            );
+          });
+        });
         return;
       }
       console.log("invalid password");
@@ -137,7 +149,12 @@ app.post("/checkCookie", upload.none(), (req, res) => {
         return;
       }
       if (found.username !== undefined) {
-        res.send(JSON.stringify({ success: true, username: found.username }));
+        let username = found.username;
+        findSingle({ username }, USERS).then(found => {
+          res.send(
+            JSON.stringify({ success: true, username, favourites: found.saved })
+          );
+        });
         return;
       }
       res.send(FAILURE);
@@ -316,6 +333,44 @@ app.post("/new-recipe", upload.none(), (req, res) => {
     //dbo.collection(RECIPES).insertOne(newRecipe);
     res.send(SUCCESS);
   });
+});
+
+/** HANDLING FAVOURITES */
+app.post("/update-favourites", upload.none(), (req, res) => {
+  console.log("... updating favourites, ", req.body);
+  let rid = req.body.rid;
+  let username = req.body.username;
+  findSingle({ username }, USERS).then(found => {
+    let favs = found.saved;
+    if (favs[rid] === undefined) {
+      favs[rid] = 1;
+    } else {
+      delete favs[rid];
+    }
+    dbo.collection(USERS).updateOne({ username }, { $set: { saved: favs } });
+    res.send(JSON.stringify(favs));
+  });
+});
+
+app.post("/get-favourites", upload.none(), (req, res) => {
+  console.log("... getting favourites");
+  let rids = JSON.parse(req.body.rids);
+  let q = rids.map(rid => {
+    return { rid: parseInt(rid) };
+    // return { rid };
+  });
+  let searchQuery = { $or: q };
+  dbo
+    .collection(RECIPES)
+    .find(searchQuery)
+    .toArray((err, arr) => {
+      if (err) {
+        console.log("error: ", err);
+        res.send(FAILURE);
+        return;
+      }
+      res.send(JSON.stringify({ recipes: arr }));
+    });
 });
 
 /**BOILERPLATE THINGS */

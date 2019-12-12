@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
+import Favourite from "./Favourite.jsx";
 
 const Tile = styled.div`
   position: relative;
@@ -14,7 +15,22 @@ const Tile = styled.div`
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  &:hover {
+    .favourite {
+      visibility: visible;
+    }
+  }
+  .favourite {
+    visibility: hidden;
+    padding: 5px 5px 0 5px;
+    border-radius: 5px;
+    background: whitesmoke;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
   .image {
+    position: relative;
     img {
       object-fit: cover;
       height: 100%;
@@ -76,7 +92,7 @@ const Tile = styled.div`
   }
 `;
 
-class RecipePreview extends Component {
+class UnconnectedRecipePreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -94,6 +110,11 @@ class RecipePreview extends Component {
         <Link className="image" to={"/recipe/" + this.props.recipe.rid}>
           <img src={this.props.recipe.image}></img>
           <h3>{this.props.recipe.title}</h3>
+          {this.props.isLoggedIn && (
+            <div className="favourite">
+              <Favourite rid={this.props.recipe.rid} />
+            </div>
+          )}
         </Link>
         <div id="content"></div>
         <div className="arrow up" onClick={this.clickHandler}>
@@ -114,5 +135,13 @@ class RecipePreview extends Component {
     );
   }
 }
+
+let mapStateToProps = st => {
+  return {
+    isLoggedIn: st.loggedIn
+  };
+};
+
+let RecipePreview = connect(mapStateToProps)(UnconnectedRecipePreview);
 
 export default RecipePreview;

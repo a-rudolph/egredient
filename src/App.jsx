@@ -8,7 +8,8 @@ import RecipeForm from "./RecipeForm.jsx";
 import Recipe from "./Recipe.jsx";
 import Browse from "./Browse.jsx";
 import Ingredients from "./Ingredients.jsx";
-import { LOGIN, RECIPES } from "./globals.js";
+import Favourites from "./Favourites.jsx";
+import { LOGIN, RECIPES, FAV } from "./globals.js";
 
 class UnconnectedApp extends Component {
   componentDidMount() {
@@ -24,6 +25,8 @@ class UnconnectedApp extends Component {
         let response = JSON.parse(body);
         if (response.success) {
           this.props.login(response.username);
+          console.log("cookie adding favs, ", response);
+          this.props.updateFavs(response.favourites);
         }
       });
     fetch("/get-recipes")
@@ -63,7 +66,7 @@ class UnconnectedApp extends Component {
           <Navbar />
           <Auth />
           <div className="content">
-            <Route exact={true} path="/" render={() => <Landing></Landing>} />
+            <Route exact={true} path="/" render={() => <Landing />} />
             <Route exact={true} path="/recipes" render={() => <Browse />} />
             <Route
               exact={true}
@@ -79,6 +82,11 @@ class UnconnectedApp extends Component {
               exact={true}
               path="/recipe/:rid"
               render={this.renderRecipe}
+            />
+            <Route
+              exact={true}
+              path="/favourites"
+              render={() => <Favourites />}
             />
           </div>
         </BrowserRouter>
@@ -100,6 +108,9 @@ let mapDispatchToProps = dispatch => {
     },
     loadRecipes: recipes => {
       dispatch({ type: RECIPES, recipes });
+    },
+    updateFavs: favs => {
+      dispatch({ type: FAV, favs });
     }
   };
 };

@@ -1,9 +1,10 @@
 import { createStore } from "redux";
-import { LOGIN, MODAL, LOGOUT, QUERY, RECIPES } from "./globals.js";
+import { LOGIN, MODAL, LOGOUT, QUERY, RECIPES, FAV } from "./globals.js";
 
 const INITIAL_STATE = {
   activeUser: "guest",
   loggedIn: false,
+  userFavs: {},
   modal: "none",
   searchQuery: "",
   recipes: []
@@ -18,13 +19,16 @@ let reducer = (state, action) => {
       return { ...state, modal: action.display };
     }
     case LOGOUT: {
-      return { ...INITIAL_STATE };
+      return { ...state, activeUser: "guest", loggedIn: false, userFavs: {} };
     }
     case QUERY: {
       return { ...state, searchQuery: action.query };
     }
     case RECIPES: {
       return { ...state, recipes: action.recipes };
+    }
+    case FAV: {
+      return { ...state, userFavs: action.favs };
     }
     default: {
       return state;

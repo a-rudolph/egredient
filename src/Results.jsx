@@ -31,4 +31,12 @@ class Results extends Component {
   }
 }
 
+// let mapStateToProps = st => {
+//   return {
+//     favourites: st.userFavs
+//   };
+// };
+
+// let Results = connect(mapStateToProps)(UnconnectedResults);
+
 export default Results;

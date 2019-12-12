@@ -108,7 +108,7 @@ class UnconnectedNavbar extends Component {
     if (this.props.isLoggedIn) {
       return (
         <div className="dropdown-content">
-          <Link className="dropdown-elem" id="favs" to="/">
+          <Link className="dropdown-elem" id="favs" to="/favourites">
             favourites
           </Link>
           <Link className="dropdown-elem" id="new-recipe" to="/new-recipe">
