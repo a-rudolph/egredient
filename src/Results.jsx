@@ -3,7 +3,7 @@ import styled from "styled-components";
 import RecipePreview from "./RecipePreview.jsx";
 
 const Div = styled.div`
-  min-height: 100vh;
+  min-height: 90vh;
   width: 100%;
   display: flex;
   flex-wrap: wrap;

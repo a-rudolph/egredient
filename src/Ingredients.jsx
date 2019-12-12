@@ -9,6 +9,9 @@ import { connect } from "react-redux";
 import Results from "./Results.jsx";
 
 const Search = styled.div`
+  * {
+    box-sizing: border-box;
+  }
   display: block;
   .container {
     width: 100%;
@@ -23,11 +26,40 @@ const Search = styled.div`
       padding: 50px 0 50px 50px;
       display: flex;
       align-items: center;
+      * {
+        font-size: large;
+      }
       form {
-        div {
+        .button-holder {
           width: 100%;
-          button {
-            width: inherit;
+          .search-button {
+            width: 100%;
+            padding: 5px 0px;
+            margin: 5px 0;
+            border: none;
+            background-color: #bf4904;
+            color: white;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+            &:hover {
+              opacity: 0.9;
+            }
+          }
+        }
+        .input-holder {
+          height: 5vh;
+          border-bottom: 1px solid;
+          padding: 0 5px;
+          * {
+            background: transparent;
+            height: 100%;
+            border: none;
+          }
+          #input {
+            padding-left: 5px;
+          }
+          .submit-button {
+            background: #dee9ed;
           }
         }
       }
@@ -81,8 +113,8 @@ class UnconnectedIngredients extends Component {
       input: "",
       select: "and",
       and: {},
-      or: { pickle: 1 },
-      not: { anchovies: 1 },
+      or: {},
+      not: {},
       recipes: []
     };
   }
@@ -151,22 +183,29 @@ class UnconnectedIngredients extends Component {
           <div className="panel">
             <div className="form-holder">
               <form onSubmit={this.submitHandler}>
-                <select id="select" onChange={this.changeHandler}>
-                  <option value="and">and</option>
-                  <option value="or">or</option>
-                  <option value="not">not</option>
-                </select>
-                <input
-                  id="input"
-                  type="text"
-                  placeholder="ingredient"
-                  required
-                  value={this.state.input}
-                  onChange={this.changeHandler}
-                />
-                <input type="submit" value="add" />
-                <div>
-                  <button onClick={this.searchHandler}>Search</button>
+                <div className="input-holder">
+                  <select id="select" onChange={this.changeHandler}>
+                    <option value="and">and</option>
+                    <option value="or">or</option>
+                    <option value="not">not</option>
+                  </select>
+                  <input
+                    id="input"
+                    type="text"
+                    placeholder="ingredient"
+                    required
+                    value={this.state.input}
+                    onChange={this.changeHandler}
+                  />
+                  <input className="submit-button" type="submit" value="add" />
+                </div>
+                <div className="button-holder">
+                  <button
+                    className="search-button"
+                    onClick={this.searchHandler}
+                  >
+                    Search
+                  </button>
                 </div>
               </form>
             </div>
@@ -180,7 +219,7 @@ class UnconnectedIngredients extends Component {
                 {this.renderQueries("or")}
               </div>
               <div className="criteria">
-                <h3>does not include:</h3>
+                <h3>not included:</h3>
                 {this.renderQueries("not")}
               </div>
             </div>

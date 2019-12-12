@@ -8,7 +8,7 @@ const Tile = styled.div`
   position: relative;
   height: 50vh;
   width: 250px;
-  margin: 25px;
+  margin: 15px;
   background-color: #dee9ed;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   overflow: hidden;
@@ -26,7 +26,7 @@ const Tile = styled.div`
     padding: 5px;
   }
   #content {
-    height: 15vh;
+    /**some content css */
   }
   .arrow {
     width: 100%;

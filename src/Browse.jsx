@@ -29,6 +29,8 @@ const Recipes = styled.div`
     div {
       font-size: x-large;
       input {
+        padding: 0 0 1px 5px;
+        height: 100%;
         font-size: inherit;
         background: transparent;
         border: none;
@@ -41,10 +43,14 @@ const Recipes = styled.div`
       }
       button {
         font-size: inherit;
+        padding: 0 10px;
         height: 2rem;
-        background: whitesmoke;
+        background: #bf4904;
+        color: white;
         opacity: 0.5;
+        border-style: none;
         border-radius: 0 15px 15px 0;
+        transition: opacity 0.2s ease;
         &:hover {
           opacity: 0.8;
         }
@@ -53,6 +59,7 @@ const Recipes = styled.div`
   }
   .results {
     margin-top: 90px;
+    padding-left: 0;
   }
 
   .tags {
@@ -213,7 +220,7 @@ class UnconnectedBrowse extends Component {
                 <input
                   autoFocus
                   type="text"
-                  placeholder="search for a recipe..."
+                  placeholder="look for a recipe..."
                   value={this.props.query}
                   onChange={this.changeHandler}
                 ></input>
