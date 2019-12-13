@@ -15,22 +15,7 @@ const Tile = styled.div`
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  &:hover {
-    .favourite {
-      visibility: visible;
-    }
-  }
-  .favourite {
-    visibility: hidden;
-    padding: 5px 5px 0 5px;
-    border-radius: 5px;
-    background: whitesmoke;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
   .image {
-    position: relative;
     img {
       object-fit: cover;
       height: 100%;
@@ -42,27 +27,51 @@ const Tile = styled.div`
     padding: 5px;
   }
   #content {
-    /**some content css */
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    .favourite {
+      display: flex;
+      padding: 5px 5px 0 5px;
+      border-radius: 5px;
+    }
   }
   .arrow {
     width: 100%;
     display: flex;
     justify-content: center;
     opacity: 0.3;
-    transition: opacity 0.2s ease;
+    transition: all 0.2s ease;
     font-size: 20px;
     &:hover {
       opacity: 0.8;
     }
   }
+  .up {
+    position: absolute;
+    bottom: -20px;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+      bottom: 0px;
+    }
+    div {
+      text-align: center;
+      width: 100%;
+      opacity: 1;
+      background-color: whitesmoke;
+    }
+  }
   .ingredients {
-    padding-bottom: 5px;
     position: absolute;
     bottom: ${props => props.ingredients};
     height: 50vh;
     display: grid;
     grid-template-rows: auto auto 1fr;
-    background-color: #dee9ed;
+    background-color: whitesmoke;
     transition: bottom 0.3s ease;
     h3 {
       border-bottom: 1px solid;
@@ -75,7 +84,7 @@ const Tile = styled.div`
         height: 0px;
       }
       ::-webkit-scrollbar-track {
-        background-color: #dee9ed;
+        background-color: whitesmoke;
       }
 
       ::-webkit-scrollbar-thumb {
@@ -110,15 +119,17 @@ class UnconnectedRecipePreview extends Component {
         <Link className="image" to={"/recipe/" + this.props.recipe.rid}>
           <img src={this.props.recipe.image}></img>
           <h3>{this.props.recipe.title}</h3>
+        </Link>
+        <div id="content">
           {this.props.isLoggedIn && (
             <div className="favourite">
               <Favourite rid={this.props.recipe.rid} />
             </div>
           )}
-        </Link>
-        <div id="content"></div>
+        </div>
         <div className="arrow up" onClick={this.clickHandler}>
           <FaCaretUp />
+          <div>ingredients</div>
         </div>
         <div className="ingredients">
           <div className="arrow" onClick={this.clickHandler}>

@@ -11,11 +11,12 @@ const Container = styled.div`
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   input,
   textarea {
+    box-sizing: border-box;
     padding: 5px;
     background-color: whitesmoke;
     color: #0e2616;
     border: 1px solid;
-    width: 90%;
+    width: 100%;
   }
   .tags {
     display: flex;
@@ -25,11 +26,31 @@ const Container = styled.div`
       border-bottom: 1px solid;
       font-size: 20px;
     }
+    .placeholder {
+      width: 100%;
+      min-height: 20px;
+      border: none;
+    }
   }
   textarea {
     resize: none;
   }
-
+  .button-holder {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      padding: 5px 20px;
+      margin: 5px 0;
+      border: none;
+      background-color: #bf4904;
+      color: white;
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+  }
   #top {
     padding: 10px;
     display: grid;
@@ -56,15 +77,15 @@ const Tag = styled.label`
   border-bottom: 1px solid;
   background-color: whitesmoke;
   border-right: ${props => {
-    if (props.checked === "active") return "4px solid #02402e";
+    if (props.checked === "active") return "4px solid #bf4904";
     return "4px solid whitesmoke";
   }};
   &:hover {
     ${props => {
       if (props.checked === "active") return "";
       return `
-        border-right: 4px solid #02402e
-        background-color: rgb(185, 185, 185);
+        border-right: 4px solid #bf4904
+        opacity: 0.8;
         `;
     }};
   }
@@ -181,6 +202,7 @@ class RecipeForm extends Component {
         );
       })
     );
+    ret.push(<div className="placeholder" />);
     customTags.forEach((tag, i) => {
       if (tag !== "") {
         ret.push(
@@ -196,7 +218,7 @@ class RecipeForm extends Component {
   render = () => {
     console.log("rendering state, ", this.state);
     return (
-      <Container className="">
+      <Container>
         <div className="form">
           New Recipe
           <div id="top">
@@ -266,7 +288,7 @@ class RecipeForm extends Component {
             onChange={this.changeHandler}
             value={this.state.steps}
           />
-          <div>
+          <div className="button-holder">
             <button onClick={this.submitHandler}>Submit</button>
           </div>
         </div>

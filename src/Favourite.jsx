@@ -6,18 +6,22 @@ import { FAV } from "./globals";
 
 const Div = styled.div`
   background: transparent;
+  width: auto;
   .heart {
     overflow: visible;
-    stroke: #ff6347;
-    stroke-width: 50px;
+    stroke: red;
+    stroke-width: 30px;
     height: 30px;
     width: 30px;
   }
   .outline {
-    fill: #ff634722;
+    fill: transparent;
+    &:hover {
+      fill: #ff634744;
+    }
   }
   .fill {
-    fill: #ff6347;
+    fill: red;
   }
 `;
 

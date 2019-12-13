@@ -47,7 +47,6 @@ const Recipes = styled.div`
         height: 2rem;
         background: #bf4904;
         color: white;
-        opacity: 0.5;
         border-style: none;
         border-radius: 0 15px 15px 0;
         transition: opacity 0.2s ease;

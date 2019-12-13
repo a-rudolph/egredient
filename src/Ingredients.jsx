@@ -58,8 +58,17 @@ const Search = styled.div`
           #input {
             padding-left: 5px;
           }
-          .submit-button {
+          .add-button {
             background: #dee9ed;
+            cursor: pointer;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+          #select {
+            &:hover {
+              background: #bf4904;
+            }
           }
         }
       }
@@ -197,7 +206,7 @@ class UnconnectedIngredients extends Component {
                     value={this.state.input}
                     onChange={this.changeHandler}
                   />
-                  <input className="submit-button" type="submit" value="add" />
+                  <input className="add-button" type="submit" value="add" />
                 </div>
                 <div className="button-holder">
                   <button

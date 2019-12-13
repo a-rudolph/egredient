@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { exampleRecipe } from "./globals.js";
+import Favourite from "./Favourite.jsx";
 
 const Background = styled.div`
   .container {
@@ -9,11 +9,15 @@ const Background = styled.div`
     div {
       background-color: whitesmoke;
     }
-    .title {
+    .top-line {
+      display: grid;
+      grid-template-columns: auto 1fr;
       padding: 0 60px;
       margin-top: 30px;
       border-bottom: 1px solid;
       border-top: 1px solid #6393a6;
+    }
+    .title {
       align-items: flex-end;
       h2 {
         margin: 0;
@@ -21,6 +25,9 @@ const Background = styled.div`
       div {
         height: min-content;
       }
+    }
+    .heart {
+      justify-content: flex-end;
     }
     .middle,
     .list {
@@ -68,9 +75,14 @@ class Recipe extends Component {
     return (
       <Background className="background">
         <div className="container">
-          <div className="flex title">
-            <h2>{this.recipe.title}</h2>
-            <div>{this.recipe.chef /**TURN THIS TO A LINK EVENTUALLY*/}</div>
+          <div className="top-line">
+            <div className="flex title">
+              <h2>{this.recipe.title}</h2>
+              <div>{this.recipe.chef /**TURN THIS TO A LINK EVENTUALLY*/}</div>
+            </div>
+            <div className="heart flex">
+              <Favourite rid={this.recipe.rid} />
+            </div>
           </div>
           <div className="flex middle">
             <img src={this.recipe.image} />
