@@ -8,18 +8,25 @@ import Favourite from "./Favourite.jsx";
 const Tile = styled.div`
   position: relative;
   height: 50vh;
-  width: 250px;
+  width: 350px;
   margin: 15px;
   background-color: #dee9ed;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  .image {
+  .label {
     img {
       object-fit: cover;
       height: 100%;
       width: 100%;
+    }
+    h3 {
+      white-space: nowrap;
+      height: 1em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 320px;
     }
   }
   h3 {
@@ -116,7 +123,7 @@ class UnconnectedRecipePreview extends Component {
   render() {
     return (
       <Tile ingredients={this.state.ingr ? "0" : "-50vh"}>
-        <Link className="image" to={"/recipe/" + this.props.recipe.rid}>
+        <Link className="label" to={"/recipe/" + this.props.recipe.rid}>
           <img src={this.props.recipe.image}></img>
           <h3>{this.props.recipe.title}</h3>
         </Link>

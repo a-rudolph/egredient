@@ -3,6 +3,16 @@ import styled from "styled-components";
 import Results from "./Results.jsx";
 import { connect } from "react-redux";
 
+const Div = styled.div`
+  display: block;
+  h2 {
+    margin: 0;
+    padding: 1em;
+    background: #dee9ed;
+    width: 100%;
+  }
+`;
+
 class UnconnectedFavourites extends Component {
   constructor(props) {
     super(props);
@@ -35,9 +45,10 @@ class UnconnectedFavourites extends Component {
 
   render() {
     return (
-      <div className="background">
+      <Div className="background">
+        <h2 className="container">Favourites</h2>
         <Results recipes={this.state.recipes} />
-      </div>
+      </Div>
     );
   }
 }
