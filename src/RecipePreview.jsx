@@ -16,6 +16,8 @@ const Tile = styled.div`
   display: grid;
   grid-template-rows: auto 1fr auto;
   .label {
+    text-decoration: none;
+    color: black;
     img {
       object-fit: cover;
       height: 100%;
@@ -27,6 +29,9 @@ const Tile = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
       width: 320px;
+    }
+    &:hover {
+      text-decoration: underline;
     }
   }
   h3 {
@@ -58,33 +63,34 @@ const Tile = styled.div`
   }
   .up {
     position: absolute;
-    bottom: -20px;
+    bottom: -25px;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
     &:hover {
       bottom: 0px;
     }
-    div {
-      text-align: center;
-      width: 100%;
-      opacity: 1;
-      background-color: whitesmoke;
-    }
+  }
+  .title {
+    text-align: center;
+    width: 100%;
+    opacity: 1;
+    background-color: whitesmoke;
+    border-bottom: 1px solid;
+    font-size: 20px;
   }
   .ingredients {
     position: absolute;
     bottom: ${props => props.ingredients};
     height: 50vh;
+    width: 100%;
     display: grid;
     grid-template-rows: auto auto 1fr;
     background-color: whitesmoke;
     transition: bottom 0.3s ease;
-    h3 {
-      border-bottom: 1px solid;
-    }
     ul {
       margin: 0;
+      padding-top: 3px;
       overflow: scroll;
       ::-webkit-scrollbar {
         width: 5px;
@@ -93,7 +99,6 @@ const Tile = styled.div`
       ::-webkit-scrollbar-track {
         background-color: whitesmoke;
       }
-
       ::-webkit-scrollbar-thumb {
         background-color: transparent;
         transition: background-color 0.3s ease;
@@ -125,7 +130,7 @@ class UnconnectedRecipePreview extends Component {
       <Tile ingredients={this.state.ingr ? "0" : "-50vh"}>
         <Link className="label" to={"/recipe/" + this.props.recipe.rid}>
           <img src={this.props.recipe.image}></img>
-          <h3>{this.props.recipe.title}</h3>
+          <h3 title={this.props.recipe.title}>{this.props.recipe.title}</h3>
         </Link>
         <div id="content">
           {this.props.isLoggedIn && (
@@ -136,13 +141,13 @@ class UnconnectedRecipePreview extends Component {
         </div>
         <div className="arrow up" onClick={this.clickHandler}>
           <FaCaretUp />
-          <div>ingredients</div>
+          <div className="title">ingredients</div>
         </div>
         <div className="ingredients">
           <div className="arrow" onClick={this.clickHandler}>
             <FaCaretDown />
           </div>
-          <h3>ingredients</h3>
+          <div className="title">ingredients</div>
           <ul>
             {this.props.recipe.ingredients.map((ing, i) => {
               return <li key={i}>{ing}</li>;

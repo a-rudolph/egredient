@@ -70,7 +70,7 @@ const Nav = styled.div`
       border: none;
       transition: all 0.1s;
       &:hover {
-        background-color: #0e2616;
+        background-color: #bf4904;
         color: whitesmoke;
       }
     }

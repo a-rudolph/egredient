@@ -105,13 +105,13 @@ let getUrls = async url => {
   /**start scraping */
   const $ = cheerio.load(html);
 
-  let tiles = Array.from($("article[class=fixed-recipe-card]")).splice(0, 20);
+  let tiles = Array.from($("article[class=fixed-recipe-card]")).splice(0, 50);
   let urls = tiles.map(tile => {
-    let ret = $(tile)
+    let url = $(tile)
       .find("div")
       .find("a")
       .attr("href");
-    return ret;
+    return url;
   });
   return urls;
 };
@@ -193,16 +193,38 @@ let url =
   "https://www.allrecipes.com/recipe/230050/kale-quinoa-and-avocado-salad-with-lemon-dijon-vinaigrette/?internalSource=hub%20recipe&referringContentType=Search";
 
 // newRecipe(url);
-getUrls("https://www.allrecipes.com/")
-  .then(arr => {
-    return Promise.all(
-      arr.map(url => {
-        return newRecipe(url);
-      })
-    );
-  })
-  .then(arr => {
-    console.log(arr);
-    addToDb(arr);
-  });
+getUrls("https://www.allrecipes.com/?page=4").then(urls => {
+  console.log(urls);
+  let ret = undefined;
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "query",
+        message: "scrape these urls? (y/n)",
+        default: "n"
+      }
+    ])
+    .then(answer => {
+      if (answer.query === "n") {
+        console.log("Happy coding!");
+        return;
+      }
+      ret = Promise.all(
+        urls.map(url => {
+          return newRecipe(url);
+        })
+      );
+      return ret;
+    })
+    .then(arr => {
+      if (arr !== undefined) {
+        let filteredArr = arr.filter(recipe => {
+          return recipe.image !== "";
+        });
+        console.log(filteredArr);
+        addToDb(filteredArr);
+      }
+    });
+});
 // getVegetables();

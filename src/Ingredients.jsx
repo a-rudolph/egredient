@@ -9,8 +9,11 @@ import { connect } from "react-redux";
 import Results from "./Results.jsx";
 
 const Search = styled.div`
-  * {
+  input {
     box-sizing: border-box;
+  }
+  .results {
+    margin-left: 100px;
   }
   display: block;
   .container {
@@ -67,7 +70,7 @@ const Search = styled.div`
           }
           #select {
             &:hover {
-              background: #bf4904;
+              opacity: 0.8;
             }
           }
         }
@@ -140,12 +143,13 @@ class UnconnectedIngredients extends Component {
   deleteHandler = ev => {
     console.log("delete handled");
     let select = ev.target.parentNode.id;
-    console.log("select, ", select);
+    // console.log("select, ", select);
     let temp = { ...this.state[select] };
     delete temp[ev.target.id];
     this.setState({ [select]: temp });
   };
-  searchHandler = () => {
+  searchHandler = ev => {
+    ev.preventDefault();
     console.log("search handled");
     let data = new FormData();
     data.append("and", JSON.stringify(this.state.and));
@@ -202,7 +206,7 @@ class UnconnectedIngredients extends Component {
                     id="input"
                     type="text"
                     placeholder="ingredient"
-                    required
+                    autoComplete="off"
                     value={this.state.input}
                     onChange={this.changeHandler}
                   />
@@ -234,7 +238,9 @@ class UnconnectedIngredients extends Component {
             </div>
           </div>
         </div>
-        <Results recipes={this.state.recipes} />
+        <div className="results">
+          <Results recipes={this.state.recipes} />
+        </div>
       </Search>
     );
   }

@@ -2,16 +2,10 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { QUERY, RECIPES } from "./globals.js";
-import { tags } from "./DATA.js";
 import Results from "./Results.jsx";
 
 const Recipes = styled.div`
-  .container {
-    background-image: url("batthern.png");
-    margin: 0;
-    padding: 0;
-    width: 100%;
-  }
+  display: block;
   .panel {
     display: flex;
     justify-content: center;
@@ -31,6 +25,7 @@ const Recipes = styled.div`
       input {
         padding: 0 0 1px 5px;
         height: 100%;
+        width: 80vh;
         font-size: inherit;
         background: transparent;
         border: none;
@@ -59,10 +54,11 @@ const Recipes = styled.div`
   .results {
     margin-top: 90px;
     padding-left: 0;
+    height: min-content;
   }
 
   .tags {
-    float: left;
+    /* float: left; */
     padding: 0 0 0 40px;
     display: flex;
     flex-direction: column;
@@ -116,6 +112,11 @@ const Recipes = styled.div`
     .placeholder {
       border: none;
     }
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1px 1fr;
+    height: 0;
   }
 `;
 
@@ -212,29 +213,31 @@ class UnconnectedBrowse extends Component {
     // console.log("rendering with state, ", this.state);
     return (
       <Recipes className="background">
-        <div className="container">
-          <div className="search panel">
-            <div className="panel">
-              <form onSubmit={this.submitHandler}>
-                <input
-                  autoFocus
-                  type="text"
-                  placeholder="look for a recipe..."
-                  value={this.props.query}
-                  onChange={this.changeHandler}
-                ></input>
-              </form>
-              <button onClick={this.submitHandler}>search</button>
-            </div>
+        {/* <div className="container"> */}
+        <div className="search panel">
+          <div className="panel">
+            <form onSubmit={this.submitHandler}>
+              <input
+                autoFocus
+                type="text"
+                placeholder="look for a recipe..."
+                value={this.props.query}
+                onChange={this.changeHandler}
+              ></input>
+            </form>
+            <button onClick={this.submitHandler}>search</button>
           </div>
-          <div className="panel" id="recent-tags">
-            recent tags
-          </div>
+        </div>
+        <div className="panel" id="recent-tags">
+          recent tags
+        </div>
+        <div className="grid">
           <div className="tags panel">{this.renderTags()}</div>
           <div className="results panel">
             <Results recipes={this.props.recipes} />
           </div>
         </div>
+        {/* </div> */}
       </Recipes>
     );
   }

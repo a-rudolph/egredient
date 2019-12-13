@@ -251,7 +251,7 @@ app.post("/search-recipes", upload.none(), (req, res) => {
       if (arr === null) {
         console.log("no recipes found");
       }
-      res.send(JSON.stringify(arr.slice(-20)));
+      res.send(JSON.stringify(arr));
     });
 });
 
