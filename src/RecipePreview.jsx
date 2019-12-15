@@ -7,7 +7,7 @@ import Favourite from "./Favourite.jsx";
 
 const Tile = styled.div`
   position: relative;
-  height: 50vh;
+  height: 300px;
   width: 350px;
   margin: 15px;
   background-color: #dee9ed;
@@ -82,7 +82,7 @@ const Tile = styled.div`
   .ingredients {
     position: absolute;
     bottom: ${props => props.ingredients};
-    height: 50vh;
+    height: 300px;
     width: 100%;
     display: grid;
     grid-template-rows: auto auto 1fr;
@@ -127,7 +127,7 @@ class UnconnectedRecipePreview extends Component {
 
   render() {
     return (
-      <Tile ingredients={this.state.ingr ? "0" : "-50vh"}>
+      <Tile ingredients={this.state.ingr ? "0" : "-300px"}>
         <Link className="label" to={"/recipe/" + this.props.recipe.rid}>
           <img src={this.props.recipe.image}></img>
           <h3 title={this.props.recipe.title}>{this.props.recipe.title}</h3>

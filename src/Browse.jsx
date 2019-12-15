@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { QUERY, RECIPES } from "./globals.js";
 import Results from "./Results.jsx";
+import Footer from "./Footer.jsx";
+import Banner from "./Banner.jsx";
 
 const Recipes = styled.div`
   display: block;
@@ -116,7 +118,7 @@ const Recipes = styled.div`
   .grid {
     display: grid;
     grid-template-columns: 1px 1fr;
-    height: 0;
+    height: auto;
   }
 `;
 
@@ -213,6 +215,7 @@ class UnconnectedBrowse extends Component {
     // console.log("rendering with state, ", this.state);
     return (
       <Recipes className="background">
+        <Banner />
         {/* <div className="container"> */}
         <div className="search panel">
           <div className="panel">
@@ -237,6 +240,7 @@ class UnconnectedBrowse extends Component {
             <Results recipes={this.props.recipes} />
           </div>
         </div>
+        <Footer />
         {/* </div> */}
       </Recipes>
     );

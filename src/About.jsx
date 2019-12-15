@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import Ingredients from "./Ingredients.jsx";
 import Banner from "./Banner.jsx";
+import Footer from "./Footer.jsx";
 
 const Container = styled.div`
   height: 100%;
@@ -10,12 +12,12 @@ const Container = styled.div`
   position: relative;
   .middle {
     background-color: white;
-    height: 150vh;
+    height: 30vh;
     z-index: 5;
   }
 `;
 
-class Landing extends Component {
+class About extends Component {
   constructor(props) {
     super(props);
   }
@@ -23,12 +25,13 @@ class Landing extends Component {
     return (
       <>
         <Container>
-          <Banner />
-          <div className="middle">some other content</div>
+          <Banner clickable={true} />
+          <div className="middle"></div>
+          <Footer />
         </Container>
       </>
     );
   }
 }
 
-export default Landing;
+export default About;

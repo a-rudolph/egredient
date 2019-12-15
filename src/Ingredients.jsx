@@ -7,6 +7,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import Results from "./Results.jsx";
+import Footer from "./Footer.jsx";
+import Banner from "./Banner.jsx";
 
 const Search = styled.div`
   input {
@@ -14,6 +16,7 @@ const Search = styled.div`
   }
   .results {
     margin-left: 100px;
+    min-height: 40vh;
   }
   display: block;
   .container {
@@ -50,7 +53,6 @@ const Search = styled.div`
           }
         }
         .input-holder {
-          height: 5vh;
           border-bottom: 1px solid;
           padding: 0 5px;
           * {
@@ -192,6 +194,7 @@ class UnconnectedIngredients extends Component {
     console.log(this.state);
     return (
       <Search className="background">
+        <Banner />
         <div className="container">
           <div className="panel">
             <div className="form-holder">
@@ -241,6 +244,7 @@ class UnconnectedIngredients extends Component {
         <div className="results">
           <Results recipes={this.state.recipes} />
         </div>
+        <Footer />
       </Search>
     );
   }

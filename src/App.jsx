@@ -3,7 +3,7 @@ import { Route, BrowserRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import Navbar from "./Navbar.jsx";
 import Auth from "./Auth.jsx";
-import Landing from "./Landing.jsx";
+import About from "./About.jsx";
 import RecipeForm from "./RecipeForm.jsx";
 import Recipe from "./Recipe.jsx";
 import Browse from "./Browse.jsx";
@@ -66,7 +66,7 @@ class UnconnectedApp extends Component {
           <Navbar />
           <Auth />
           <div className="content">
-            <Route exact={true} path="/" render={() => <Landing />} />
+            <Route exact={true} path="/" render={() => <Browse />} />
             <Route exact={true} path="/recipes" render={() => <Browse />} />
             <Route
               exact={true}
@@ -88,6 +88,7 @@ class UnconnectedApp extends Component {
               path="/favourites"
               render={() => <Favourites />}
             />
+            <Route exact={true} path="/about-us" render={() => <About />} />
           </div>
         </BrowserRouter>
       </>

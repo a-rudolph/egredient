@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Results from "./Results.jsx";
 import { connect } from "react-redux";
+import Footer from "./Footer.jsx";
+import Banner from "./Banner.jsx";
 
 const Div = styled.div`
   display: block;
@@ -9,7 +11,9 @@ const Div = styled.div`
     margin: 0;
     padding: 1em;
     background: #dee9ed;
-    width: 100%;
+  }
+  .results {
+    min-height: 40vh;
   }
 `;
 
@@ -46,8 +50,12 @@ class UnconnectedFavourites extends Component {
   render() {
     return (
       <Div className="background">
+        <Banner />
         <h2 className="container">Favourites</h2>
-        <Results recipes={this.state.recipes} />
+        <div className="results">
+          <Results recipes={this.state.recipes} />
+        </div>
+        <Footer />
       </Div>
     );
   }

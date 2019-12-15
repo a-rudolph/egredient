@@ -23,7 +23,10 @@ height: 100%;
 `;
 
 const Container = styled.div`
+  background: transparent;
   ${props => {
+    if (!props.clickable)
+      return `height: 20vh; background: url("/background.jpg"); background-size: cover;`;
     if (props.status === "closed") {
       return `height: 40vh;`;
     }
@@ -31,7 +34,6 @@ const Container = styled.div`
   }}
 
   transition: all .4s ease-in-out;
-  background: transparent;
   position: relative;
   .overlay {
     z-index: 1;
@@ -48,7 +50,7 @@ const Container = styled.div`
       path {
         fill: white;
       }
-      path#6 {
+      #6 {
         fill: green;
       }
     }
@@ -74,6 +76,7 @@ class Banner extends Component {
     this.state = { image, status: "closed" };
   }
   clickHandler = () => {
+    if (!this.props.clickable) return;
     if (this.state.status === "closed") {
       this.setState({ status: "open" });
       return;
@@ -83,7 +86,11 @@ class Banner extends Component {
   render() {
     return (
       <>
-        <Container image={this.state.image} status={this.state.status}>
+        <Container
+          image={this.state.image}
+          status={this.state.status}
+          clickable={this.props.clickable}
+        >
           <div className="overlay" onClick={this.clickHandler}>
             {this.state.status === "open" && [
               <p>find recipes based on ingredients</p>,

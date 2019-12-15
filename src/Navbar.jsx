@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import NavSearch from "./NavSearch.jsx";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretDown, FaCarrot } from "react-icons/fa";
 import { MODAL, LOGOUT } from "./globals.js";
 
 const Nav = styled.div`
@@ -16,6 +16,8 @@ const Nav = styled.div`
   background-color: white;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   .nav-elem {
+    display: flex;
+    align-items: center;
     padding: 15px;
     text-decoration: none;
     color: black;
@@ -44,7 +46,13 @@ const Nav = styled.div`
       }
     }
   }
-
+  #logo {
+    svg {
+      fill: #bf4904;
+      height: 1.5em;
+      width: 1.5em;
+    }
+  }
   .dropdown {
     display: inline-block;
   }
@@ -146,10 +154,10 @@ class UnconnectedNavbar extends Component {
   render() {
     return (
       <Nav>
-        <Link className="nav-elem" id="logo" to="/">
-          logo
+        <Link className="nav-elem" id="logo" to="/about-us">
+          <FaCarrot />
         </Link>
-        <Link className="nav-elem" id="name" to="/">
+        <Link className="nav-elem" id="name" to="/about-us">
           ngredient
         </Link>
         <NavSearch />

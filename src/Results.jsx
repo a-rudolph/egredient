@@ -8,7 +8,7 @@ const Container = styled.div`
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: left;
+    justify-content: space-around;
     align-items: flex-start;
   }
   .controls {
@@ -62,13 +62,16 @@ class Results extends Component {
         page = parseInt(target.id);
       }
     }
-    this.setState({ page });
+    this.setState({ page }, () => {
+      // console.log("state happened");
+      // window.scrollTo(0, 0);
+    });
   };
 
   renderControls = () => {
     let recipes = this.props.recipes;
     if (this.props.recipes.length === 0) return <></>;
-    let numPages = Math.floor(recipes.length / 6);
+    let numPages = Math.floor(recipes.length / 8);
     if (numPages === 0) {
       return [
         <button id="disabled" key="left" disabled>
@@ -130,8 +133,8 @@ class Results extends Component {
   renderSearchResults = () => {
     let recipes = this.props.recipes;
     if (recipes.length === 0) return <h3>No recipes found...</h3>;
-    let shift = (this.state.page - 1) * 6;
-    let displayedRecipes = recipes.slice(shift, shift + 6);
+    let shift = (this.state.page - 1) * 8;
+    let displayedRecipes = recipes.slice(shift, shift + 8);
     return (
       <>
         {displayedRecipes.map(recipe => {
