@@ -40,6 +40,7 @@ class Results extends Component {
   constructor(props) {
     super(props);
     this.state = { page: 1 };
+    this.perPage = 12;
   }
   clickHandler = ev => {
     let page = this.state.page;
@@ -71,7 +72,7 @@ class Results extends Component {
   renderControls = () => {
     let recipes = this.props.recipes;
     if (this.props.recipes.length === 0) return <></>;
-    let numPages = Math.floor(recipes.length / 8);
+    let numPages = Math.floor(recipes.length / this.perPage);
     if (numPages === 0) {
       return [
         <button id="disabled" key="left" disabled>
@@ -133,8 +134,8 @@ class Results extends Component {
   renderSearchResults = () => {
     let recipes = this.props.recipes;
     if (recipes.length === 0) return <h3>No recipes found...</h3>;
-    let shift = (this.state.page - 1) * 8;
-    let displayedRecipes = recipes.slice(shift, shift + 8);
+    let shift = (this.state.page - 1) * this.perPage;
+    let displayedRecipes = recipes.slice(shift, shift + this.perPage);
     return (
       <>
         {displayedRecipes.map(recipe => {

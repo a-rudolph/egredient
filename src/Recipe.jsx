@@ -78,10 +78,12 @@ class Recipe extends Component {
           <div className="top-line">
             <div className="flex title">
               <h2>{this.recipe.title}</h2>
-              <div>{this.recipe.chef /**TURN THIS TO A LINK EVENTUALLY*/}</div>
+              <div>
+                {" " + this.recipe.chef /**TURN THIS TO A LINK EVENTUALLY*/}
+              </div>
             </div>
             <div className="heart flex">
-              <Favourite rid={this.recipe.rid} />
+              {/* <Favourite rid={this.recipe.rid} /> */}
             </div>
           </div>
           <div className="flex middle">

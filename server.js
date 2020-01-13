@@ -1,3 +1,4 @@
+require("dotenv").config();
 let express = require("express");
 let app = express();
 let multer = require("multer");
@@ -13,8 +14,7 @@ reloadMagic(app);
 
 /**CONNECTING THE DATABASE */
 let dbo = undefined;
-let url =
-  "mongodb+srv://adam:bobsuebob@cluster0-kjakq.mongodb.net/test?retryWrites=true&w=majority";
+let url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}.mongodb.net/test?retryWrites=true&w=majority`;
 
 MongoClient.connect(url, { useUnifiedTopology: true }, (err, db) => {
   if (err) {
@@ -33,7 +33,6 @@ const AUTH = "auth";
 const SESSIONS = "sessions";
 const USERS = "users";
 const RECIPES = "recipes";
-const RATINGS = "ratings";
 
 /**USEFUL FUNCTIONS */
 let genID = () => "" + Math.floor(Math.random() * 1000000);
@@ -330,7 +329,7 @@ app.post("/new-recipe", upload.none(), (req, res) => {
       tags
     };
     console.log("new recipe: ", newRecipe);
-    //dbo.collection(RECIPES).insertOne(newRecipe);
+    dbo.collection(RECIPES).insertOne(newRecipe);
     res.send(SUCCESS);
   });
 });

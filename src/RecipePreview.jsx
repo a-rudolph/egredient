@@ -8,7 +8,7 @@ import Favourite from "./Favourite.jsx";
 const Tile = styled.div`
   position: relative;
   height: 300px;
-  width: 350px;
+  width: 300px;
   margin: 15px;
   background-color: #dee9ed;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
@@ -28,7 +28,7 @@ const Tile = styled.div`
       height: 1em;
       overflow: hidden;
       text-overflow: ellipsis;
-      width: 320px;
+      width: 280px;
     }
     &:hover {
       text-decoration: underline;

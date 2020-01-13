@@ -118,7 +118,7 @@ const Recipes = styled.div`
   .grid {
     display: grid;
     grid-template-columns: 1px 1fr;
-    height: auto;
+    height: 160vh;
   }
 `;
 
@@ -208,6 +208,7 @@ class UnconnectedBrowse extends Component {
         let recipes = JSON.parse(body);
         // console.log("recipes recieved: ", recipes);
         this.props.updateRecipes(recipes);
+        this.props.queryChange("");
       });
   };
 
