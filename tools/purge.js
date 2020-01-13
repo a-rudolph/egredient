@@ -1,9 +1,9 @@
 let MongoClient = require("mongodb").MongoClient;
 let inquirer = require("inquirer");
+require("dotenv").config();
 
 let dbo = undefined;
-let url =
-  "mongodb+srv://adam:bobsuebob@cluster0-kjakq.mongodb.net/test?retryWrites=true&w=majority";
+let url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}.mongodb.net/test?retryWrites=true&w=majority`;
 
 MongoClient.connect(url, { useUnifiedTopology: true }, (err, db) => {
   if (err) {
