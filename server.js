@@ -14,7 +14,12 @@ reloadMagic(app);
 
 /**CONNECTING THE DATABASE */
 let dbo = undefined;
-let url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}.mongodb.net/test?retryWrites=true&w=majority`;
+// default url for public read only
+let url = `mongodb+srv://public:qd1ZUO9LwaqNOfUB@cluster0-kjakq.mongodb.net/test?retryWrites=true&w=majority`;
+
+if (process.env.DB_USER !== undefined) {
+  url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}.mongodb.net/test?retryWrites=true&w=majority`;
+}
 
 MongoClient.connect(url, { useUnifiedTopology: true }, (err, db) => {
   if (err) {

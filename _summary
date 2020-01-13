@@ -4,20 +4,16 @@ i want to login
 i want to post recipes
 i want to browse recipes
 i want to save favourites*
-i want to rate and review*
 
 i want to search for recipes
 - search by ingredients
-- search by cuisine
 - search by tags
-- search by break lunch dinner dessert
 
 
 TODO {
-    better styling on recipe tiles
-    FAVICON!
-    and logo...
-    add favourite button to the recipe pages
+    FAVICON!/ logo
+    and logo
+    footer
 }
 
 
@@ -32,7 +28,7 @@ today {
             displays for criteria
         }
     }
-    tags (get the real tags lol)
+    tags
 }
 
 tomorrow {

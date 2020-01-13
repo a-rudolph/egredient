@@ -1,5 +1,5 @@
-To start the server, run `nodemon server.js`
+Search by ngredient.
 
-Modify the `server.js` file to add endpoints
+to run use 'npm start'
 
-The frontend code goes in the `/src` directory
+default public access to DB is read only
